@@ -1,0 +1,23 @@
+node_modules/
+dist/
+dist-server/
+.env
+.env.*
+!.env.example
+*.log
+.DS_Store
+coverage/
+.gstack/
+browser-qa-state/
+
+# Source repositories must never be copied into production.
+/Transfer/
+/transfer/
+/MPU Fachwissensdatenbank/
+/mpu-fachwissensdatenbank/
+/legacy/
+/backups/
+*.sql
+*.zip
+wp-config.php
+.gstack/
