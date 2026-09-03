@@ -7,6 +7,8 @@ export const SOURCES = {
     publisher: 'Bundesministerium der Justiz / Bundesamt für Justiz',
     url: 'https://www.gesetze-im-internet.de/fev_2010/__11.html',
     sourceType: 'official',
+    governanceLevel: 1,
+    currencyStatus: 'CURRENT',
     reviewedAt: '2026-09-02',
   },
   fev66: {
@@ -15,6 +17,8 @@ export const SOURCES = {
     publisher: 'Bundesministerium der Justiz / Bundesamt für Justiz',
     url: 'https://www.gesetze-im-internet.de/fev_2010/__66.html',
     sourceType: 'official',
+    governanceLevel: 1,
+    currencyStatus: 'CURRENT',
     reviewedAt: '2026-09-02',
   },
   fev4a: {
@@ -23,6 +27,8 @@ export const SOURCES = {
     publisher: 'Bundesministerium der Justiz / Bundesamt für Justiz',
     url: 'https://www.gesetze-im-internet.de/fev_2010/anlage_4a.html',
     sourceType: 'official',
+    governanceLevel: 1,
+    currencyStatus: 'CURRENT',
     reviewedAt: '2026-09-02',
   },
   fev14: {
@@ -31,14 +37,38 @@ export const SOURCES = {
     publisher: 'Bundesministerium der Justiz / Bundesamt für Justiz',
     url: 'https://www.gesetze-im-internet.de/fev_2010/anlage_14.html',
     sourceType: 'official',
+    governanceLevel: 1,
+    currencyStatus: 'CURRENT',
     reviewedAt: '2026-09-02',
   },
   bastGuidelines: {
     id: 'bast-guidelines',
-    title: 'Begutachtungsleitlinien zur Kraftfahreignung',
+    title: 'Begutachtungsleitlinien zur Kraftfahreignung 2022 – historische Vorversion',
     publisher: 'Bundesanstalt für Straßenwesen (BASt)',
     url: 'https://bast.opus.hbz-nrw.de/frontdoor/deliver/index/docId/2664/file/Begutachtungsleitlinien%202022.pdf',
     sourceType: 'official',
+    governanceLevel: 2,
+    currencyStatus: 'HISTORICAL_PREVIOUS_VERSION',
+    reviewedAt: '2026-09-03',
+  },
+  fev13a: {
+    id: 'fev-13a',
+    title: '§ 13a Fahrerlaubnis-Verordnung (FeV) – Cannabisproblematik',
+    publisher: 'Bundesministerium der Justiz / Bundesamt für Justiz',
+    url: 'https://www.gesetze-im-internet.de/fev_2010/__13a.html',
+    sourceType: 'official',
+    governanceLevel: 1,
+    currencyStatus: 'CURRENT',
+    reviewedAt: '2026-09-03',
+  },
+  fev14Drugs: {
+    id: 'fev-14',
+    title: '§ 14 Fahrerlaubnis-Verordnung (FeV) – Betäubungs- und Arzneimittel',
+    publisher: 'Bundesministerium der Justiz / Bundesamt für Justiz',
+    url: 'https://www.gesetze-im-internet.de/fev_2010/__14.html',
+    sourceType: 'official',
+    governanceLevel: 1,
+    currencyStatus: 'CURRENT',
     reviewedAt: '2026-09-03',
   },
   bk5Foundations: {
@@ -46,23 +76,35 @@ export const SOURCES = {
     title: 'Beurteilungskriterien, 5. Auflage – Grundlagen und H0',
     publisher: 'DGVP/DGVM',
     sourceType: 'professional',
+    governanceLevel: 3,
   },
   bk5Alcohol: {
     id: 'bk5-alcohol',
     title: 'Beurteilungskriterien, 5. Auflage – Alkohol A1–A7',
     publisher: 'DGVP/DGVM',
     sourceType: 'professional',
+    governanceLevel: 3,
   },
   bk5Drugs: {
     id: 'bk5-drugs',
     title: 'Beurteilungskriterien, 5. Auflage – Drogen D1–D5',
     publisher: 'DGVP/DGVM',
     sourceType: 'professional',
+    governanceLevel: 3,
   },
   bk5Ctu: {
     id: 'bk5-ctu',
     title: 'Beurteilungskriterien, 5. Auflage – Chemisch-toxikologische Untersuchungen C3',
     publisher: 'DGVP/DGVM',
     sourceType: 'professional',
+    governanceLevel: 3,
   },
 } satisfies Record<string, SourceRef>;
+
+export const SOURCE_GAPS = {
+  currentBegutachtungsleitlinien: {
+    status: 'CURRENT_SOURCE_REQUIRED',
+    requiredVersion: 'Fassung vom 12. Dezember 2025',
+    groundedBy: 'Anlage 4a FeV',
+  },
+} as const;

@@ -5,8 +5,8 @@ export function KnowledgeFooter() {
     <footer className="site-footer">
       <div className="wrap footer-grid">
         <div>
-          <p className="eyebrow">MPU Wissen</p>
-          <p className="footer-lead">Ein redaktionelles Wissensportal aus der MPUdeincoach Markenfamilie.</p>
+          <p className="eyebrow">MPUdeincoach Wissen</p>
+          <p className="footer-lead">Das Wissensportal rund um die MPU.</p>
           <p className="fine-print">Allgemeine Information, keine Rechtsberatung, medizinische Diagnose oder Bestehensprognose.</p>
         </div>
         <div>
@@ -27,10 +27,10 @@ export function KnowledgeFooter() {
           <h2>Rechtliches</h2>
           <Link to="/impressum/">Impressum</Link>
           <Link to="/datenschutz/">Datenschutz</Link>
-          <a href="https://mpudeincoach.de">Persönliche Hilfe ↗</a>
+          <a href="https://mpudeincoach.de">Persönliche Hilfe bei deinem MPU-Fall ↗</a>
         </div>
       </div>
-      <div className="wrap footer-bottom">© 2026 MPU Wissen <span>Stand der redaktionellen Systemprüfung: 2. September 2026</span></div>
+      <div className="wrap footer-bottom">© 2026 MPUdeincoach Wissen <span>Stand der redaktionellen Systemprüfung: 2. September 2026</span></div>
     </footer>
   );
 }

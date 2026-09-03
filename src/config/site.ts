@@ -3,8 +3,8 @@ import type { PersonRef } from '../content/model';
 const siteUrl = (import.meta.env.VITE_SITE_URL || 'https://mpu-deincoach.de').replace(/\/+$/, '');
 
 export const SITE = {
-  name: 'MPU Wissen',
-  legalName: 'MPUdeincoach Wissensportal',
+  name: 'MPUdeincoach Wissen',
+  legalName: 'MPUdeincoach Wissen',
   url: siteUrl,
   language: 'de-DE',
   description: 'Verständliche, quellenorientierte Informationen rund um die medizinisch-psychologische Untersuchung.',

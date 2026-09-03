@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom';
 import { CTA_LINKS, type CtaKey } from '../config/site';
 import type { Article, ArticleBlock, FAQItem, PersonRef, SourceRef } from '../content/model';
+import { isArticlePublic, isArticleReviewPending } from '../content/model';
 import { articleBySlug } from '../content/articles';
 import { Breadcrumbs } from './Breadcrumbs';
 import { CalloutBox, ImportantBox, KnowledgeCard, ReflectionBox, ReviewBadge } from './Cards';
@@ -8,7 +9,7 @@ import { CalloutBox, ImportantBox, KnowledgeCard, ReflectionBox, ReviewBadge } f
 export function ArticleHeader({ article }: { article: Article }) {
   return (
     <header className="article-header">
-      <div className="article-labels"><span className="eyebrow">{article.pillar}</span>{article.status === 'review_required' && <ReviewBadge />}</div>
+      <div className="article-labels"><span className="eyebrow">{article.pillar}</span>{isArticleReviewPending(article) && <ReviewBadge />}</div>
       <h1>{article.title}</h1>
       <p className="dek">{article.excerpt}</p>
     </header>
@@ -20,8 +21,8 @@ export function ArticleMeta({ article }: { article: Article }) {
     <dl className="article-meta">
       <div><dt>Autor</dt><dd>{article.author.name}</dd></div>
       <div><dt>Stand</dt><dd><time dateTime={article.updatedAt}>{new Intl.DateTimeFormat('de-DE', { dateStyle: 'long' }).format(new Date(article.updatedAt))}</time></dd></div>
-      <div><dt>Fachprüfung</dt><dd>{article.reviewer ? article.reviewer.name : 'Ausstehend'}</dd></div>
-      <div><dt>Nächste Prüfung</dt><dd>{article.nextReviewAt ? new Intl.DateTimeFormat('de-DE', { dateStyle: 'medium' }).format(new Date(article.nextReviewAt)) : 'Nach Freigabe'}</dd></div>
+      <div><dt>Fachprüfung</dt><dd>{article.reviewer ? article.reviewer.name : isArticlePublic(article) ? 'Abgeschlossen' : 'Ausstehend'}</dd></div>
+      {article.reviewer && article.nextReviewAt && <div><dt>Nächste Prüfung</dt><dd>{new Intl.DateTimeFormat('de-DE', { dateStyle: 'medium' }).format(new Date(article.nextReviewAt))}</dd></div>}
     </dl>
   );
 }
@@ -47,15 +48,17 @@ export function FAQSection({ items }: { items: FAQItem[] }) {
 }
 
 export function SourcesList({ sources }: { sources: SourceRef[] }) {
-  return <section className="sources" aria-labelledby="sources-title"><h2 id="sources-title">Quellen und Arbeitsgrundlage</h2><ol>{sources.map((source) => <li key={source.id}><strong>{source.title}</strong><span>{source.publisher} · {source.sourceType === 'professional' ? 'Fachquelle' : 'Primärquelle'}{source.reviewedAt ? ` · geprüft ${source.reviewedAt}` : ''}</span>{source.url && <a href={source.url} rel="noreferrer">Quelle öffnen ↗</a>}</li>)}</ol></section>;
+  return <section className="sources" aria-labelledby="sources-title"><h2 id="sources-title">Quellen und Arbeitsgrundlage</h2><ol>{sources.map((source) => <li key={source.id}><strong>{source.title}</strong><span>{source.publisher} · Quellenstufe {source.governanceLevel}{source.currencyStatus === 'HISTORICAL_PREVIOUS_VERSION' ? ' · Historische Vorversion, nicht aktuell anwendbare Leitlinie' : ''}{source.reviewedAt ? ` · Link geprüft ${source.reviewedAt}` : ''}</span>{source.url && <a href={source.url} rel="noreferrer">Quelle öffnen ↗</a>}</li>)}</ol></section>;
 }
 
 export function AuthorCard({ person }: { person: PersonRef }) {
-  return <section className="person-card"><span className="avatar" aria-hidden="true">R</span><div><span className="card-kicker">Verantwortlich für die Arbeitsfassung</span><h2>{person.name}</h2><p>{person.role}. Die namentliche fachliche Prüfung ist vor Indexfreigabe nachzutragen.</p><Link to="/redaktion/">So arbeitet die Redaktion →</Link></div></section>;
+  return <section className="person-card"><span className="avatar" aria-hidden="true">R</span><div><span className="card-kicker">Redaktionell verantwortlich</span><h2>{person.name}</h2><p>{person.role}. Fachliche Freigaben und offene Reviewgrenzen werden artikelbezogen dokumentiert.</p><Link to="/redaktion/">So arbeitet die Redaktion →</Link></div></section>;
 }
 
-export function ReviewerCard({ reviewer, scope }: { reviewer: PersonRef | null; scope?: string }) {
-  return <section className="reviewer-card"><ReviewBadge /><h2>{reviewer ? reviewer.name : 'Noch keine namentliche Fachfreigabe'}</h2><p>{scope}</p></section>;
+export function ReviewerCard({ reviewer, scope, approved = false }: { reviewer: PersonRef | null; scope?: string; approved?: boolean }) {
+  if (!reviewer && approved) return <section className="reviewer-card"><h2>Fachprüfung abgeschlossen</h2><p>{scope}</p></section>;
+  if (!reviewer) return <section className="reviewer-card"><ReviewBadge /><h2>Freigabe steht aus</h2><p>{scope}</p></section>;
+  return <section className="reviewer-card"><h2>{reviewer.name}</h2><p>{reviewer.role}</p>{scope && <p>{scope}</p>}</section>;
 }
 
 export function ArticleUpdateInfo({ article }: { article: Article }) {
@@ -64,7 +67,7 @@ export function ArticleUpdateInfo({ article }: { article: Article }) {
 
 export function ArticleCTA({ target }: { target: string | null }) {
   if (!target || !(target in CTA_LINKS)) return null;
-  return <aside className="article-cta"><span className="eyebrow">Persönliche Einordnung</span><h2>Wissen beantwortet nicht jede Einzelfallfrage.</h2><p>Wenn du deinen konkreten Fall einordnen lassen möchtest, wechselst du hier bewusst zur kommerziellen Hauptseite.</p><a className="button dark" href={CTA_LINKS[target as CtaKey]}>Zu MPUdeincoach.de ↗</a></aside>;
+  return <aside className="article-cta"><span className="eyebrow">Persönliche Einordnung</span><h2>Wissen beantwortet nicht jede Einzelfallfrage.</h2><p>Wenn du deinen konkreten Fall einordnen lassen möchtest, wechselst du hier bewusst zur kommerziellen MPUdeincoach Website.</p><a className="button dark" href={CTA_LINKS[target as CtaKey]}>Persönliche Hilfe bei deinem MPU-Fall ↗</a></aside>;
 }
 
 export const CrossDomainCTA = ArticleCTA;
@@ -90,7 +93,7 @@ export function ArticleLayout({ article }: { article: Article }) {
             <SourcesList sources={article.sources} />
             <ArticleUpdateInfo article={article} />
             <AuthorCard person={article.author} />
-            <ReviewerCard reviewer={article.reviewer} scope={article.reviewScope} />
+            <ReviewerCard reviewer={article.reviewer} scope={article.reviewScope} approved={isArticlePublic(article)} />
             <ArticleCTA target={article.ctaTarget} />
           </div>
         </div>

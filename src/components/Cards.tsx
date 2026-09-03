@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom';
 import type { Article, Pillar } from '../content/model';
+import { isArticleReviewPending } from '../content/model';
 
 export function ReviewBadge({ compact = false }: { compact?: boolean }) {
   return <span className={`review-badge${compact ? ' compact' : ''}`}><span aria-hidden="true">●</span> Fachprüfung ausstehend</span>;
@@ -13,7 +14,7 @@ export function PillarCard({ pillar }: { pillar: Pillar }) {
 export function KnowledgeCard({ article }: { article: Article }) {
   return (
     <Link className="knowledge-card" to={article.slug}>
-      <div className="card-top"><span>{article.pillar}</span>{article.status === 'review_required' && <ReviewBadge compact />}</div>
+      <div className="card-top"><span>{article.pillar}</span>{isArticleReviewPending(article) && <ReviewBadge compact />}</div>
       <h3>{article.title}</h3>
       <p>{article.excerpt}</p>
       <span className="text-link">Artikel lesen →</span>

@@ -31,7 +31,7 @@ export function KnowledgeHeader() {
       <div className="header-bar wrap">
         <Link className="brand" to="/">
           <span className="brand-mark" aria-hidden="true">M</span>
-          <span><strong>MPU</strong> Wissen<small>von MPUdeincoach</small></span>
+          <span><strong>MPUdeincoach</strong> Wissen<small>Das Wissensportal rund um die MPU</small></span>
         </Link>
         <button className="menu-button" type="button" aria-expanded={open} aria-controls="mobile-navigation" onClick={() => setOpen((value) => !value)}>
           <span aria-hidden="true">{open ? '×' : '☰'}</span> Menü

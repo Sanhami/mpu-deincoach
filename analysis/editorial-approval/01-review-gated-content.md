@@ -1,0 +1,14 @@
+# Review-gated content
+
+The expert handoff approved two articles after listed corrections. Four articles remain excluded from the sitemap and derive `noindex` from `FACHREVIEW_REQUIRED`.
+
+| Route | Title | Primary topic | Search intent | Current sources | High-risk claim groups | Review type | Status |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| `/mpu-ablauf/` | MPU-Verfahren: Rollen, Akte und Gutachten | MPU procedure | institutional roles and document flow | FeV §11; FeV Anlage 4a; Beurteilungskriterien foundations | authority question, deadline, file transfer, examination, report consequences | Expert article review complete | `APPROVED_PUBLIC`; sitemap and scoped Article/FAQ schema |
+| `/mpu-kosten/` | MPU-Kosten: Bestandteile und Einflussfaktoren | MPU cost taxonomy | neutral fee taxonomy and source currency | FeV §11; Beurteilungskriterien foundations | fee categories, third-party costs, price currency | `MULTIPLE`: MPU_FACHREVIEW, EDITORIAL_REVIEW, SOURCE_VERIFICATION | `FACHREVIEW_REQUIRED`; noindex |
+| `/alkohol-mpu/` | Alkohol-MPU: Grundlagen und Wissensübersicht | alcohol MPU concepts | alcohol risk, change and evidence concepts | Beurteilungskriterien alcohol and CTU; FeV Anlage 4a; BASt 2022 historical previous version | consumption history, behavior change, abstinence/fall-dependent separation, evidence quality | `MULTIPLE`: MPU_FACHREVIEW, EDITORIAL_REVIEW, SOURCE_VERIFICATION | `FACHREVIEW_REQUIRED`; noindex; `CURRENT_SOURCE_REQUIRED` |
+| `/drogen-mpu/` | Drogen-MPU: Anlässe, Ablauf und Nachweise | drug-related MPU concepts | drug-related MPU concepts and evidence boundaries | FeV §§13a, 14; FeV Anlage 4a; Beurteilungskriterien drugs and CTU | substance distinctions, prognostic claims, laboratory evidence, cannabis law | `MULTIPLE`: MPU_FACHREVIEW, LEGAL_REVIEW for cannabis/current law, EDITORIAL_REVIEW, SOURCE_VERIFICATION | `FACHREVIEW_REQUIRED`; noindex |
+| `/abstinenznachweis/` | Abstinenznachweis für die MPU: Überblick | CTU evidence quality | CTU evidence integrity and documentation quality | Beurteilungskriterien CTU; FeV Anlage 4a | need/method/period, hair and urine evidence, identity, sampling, documentation | `MULTIPLE`: MPU_FACHREVIEW, EDITORIAL_REVIEW, SOURCE_VERIFICATION | `FACHREVIEW_REQUIRED`; noindex |
+| `/mpu-begutachtungsstelle/` | MPU-Begutachtungsstelle wählen: Was du wissen solltest | assessment-center roles and selection | informational / educational | FeV §11, §66, Anlage 4a, Anlage 14; Beurteilungskriterien foundations | recognition, selection, files, inspection, switching, independence, role separation | Expert article review complete | `APPROVED_PUBLIC`; sitemap and scoped Article/FAQ schema |
+
+The approved handoff supplies article-level decisions but no public reviewer identity. No identity or row-level approval has been invented.

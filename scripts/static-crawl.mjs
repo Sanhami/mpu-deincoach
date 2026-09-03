@@ -92,7 +92,7 @@ for (const { from, to, status } of redirects) {
 
 const goneCount = [...htmlByRoute.values()].filter((html) => html.includes('<title>Inhalt entfernt | MPU Wissen</title>')).length;
 if (htmlFiles.length !== 31) failures.push(`expected 31 HTML files, found ${htmlFiles.length}`);
-if (indexable.length !== 8) failures.push(`expected 8 indexable pages, found ${indexable.length}`);
+if (indexable.length !== 11) failures.push(`expected 11 indexable pages, found ${indexable.length}`);
 if (redirects.length !== 18) failures.push(`expected 18 redirects, found ${redirects.length}`);
 if (goneCount !== 10) failures.push(`expected 10 gone pages, found ${goneCount}`);
 if (goneManifest.length !== 10 || new Set(goneManifest).size !== 10) failures.push('gone manifest must contain 10 unique routes');

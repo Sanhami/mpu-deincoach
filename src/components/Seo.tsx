@@ -1,5 +1,6 @@
 import { useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
+import { SITE } from '../config/site';
 import { getPageSeo, schemaForPath } from '../seo';
 
 function setMeta(selector: string, attribute: 'name' | 'property', key: string, content: string) {
@@ -19,7 +20,7 @@ export function Seo() {
     setMeta('meta[property="og:description"]', 'property', 'og:description', seo.description);
     setMeta('meta[property="og:url"]', 'property', 'og:url', seo.canonical);
     setMeta('meta[property="og:type"]', 'property', 'og:type', seo.type ?? 'website');
-    setMeta('meta[property="og:site_name"]', 'property', 'og:site_name', 'MPU Wissen');
+    setMeta('meta[property="og:site_name"]', 'property', 'og:site_name', SITE.name);
     setMeta('meta[name="twitter:card"]', 'name', 'twitter:card', 'summary');
     setMeta('meta[name="twitter:title"]', 'name', 'twitter:title', seo.title);
     setMeta('meta[name="twitter:description"]', 'name', 'twitter:description', seo.description);

@@ -1,7 +1,8 @@
 import { Link, useSearchParams } from 'react-router-dom';
 import { Breadcrumbs } from '../components/Breadcrumbs';
-import { KnowledgeCard, PillarCard, ReviewBadge } from '../components/Cards';
+import { KnowledgeCard, PillarCard } from '../components/Cards';
 import { ARTICLES } from '../content/articles';
+import { isFAQPublic } from '../content/model';
 import { GLOSSARY, PILLARS } from '../content/pillars';
 
 export function KnowledgeIndexPage() {
@@ -19,6 +20,6 @@ export function GlossaryPage() {
 }
 
 export function FAQPage() {
-  const entries = ARTICLES.flatMap((article) => article.faq.map((faq) => ({ ...faq, path: article.slug, pillar: article.pillar }))).filter((item, index, all) => all.findIndex((candidate) => candidate.question === item.question) === index);
-  return <main id="main-content"><div className="wrap narrow"><Breadcrumbs items={[{ label: 'FAQ' }]} /><header className="page-header"><span className="eyebrow">Allgemeine Wissensfragen</span><h1>Häufige Fragen zur MPU</h1><p>Jede Frage hat genau einen redaktionellen Eigentümer. Service-, Buchungs- und Angebotsfragen liegen nicht auf diesem Wissensportal.</p><ReviewBadge /></header><section className="faq-list">{entries.map((entry) => <details key={entry.question}><summary><span>{entry.pillar}</span>{entry.question}</summary><p>{entry.answer}</p><Link to={entry.path}>Im ausführlichen Artikel weiterlesen →</Link></details>)}</section><p className="scope-note boxed">FAQ-Schema bleibt bis zur fachlichen Freigabe deaktiviert. Neun risikoreiche Legacy-Fragen und drei veraltete Fragen wurden nicht veröffentlicht.</p></div></main>;
+  const entries = ARTICLES.flatMap((article) => article.faq.filter(isFAQPublic).map((faq) => ({ ...faq, path: article.slug, pillar: article.pillar }))).filter((item, index, all) => all.findIndex((candidate) => candidate.question === item.question) === index);
+  return <main id="main-content"><div className="wrap narrow"><Breadcrumbs items={[{ label: 'FAQ' }]} /><header className="page-header"><span className="eyebrow">Allgemeine Wissensfragen</span><h1>Häufige Fragen zur MPU</h1><p>Diese Sammlung enthält ausschließlich fachlich freigegebene Fragen. Service-, Buchungs- und Angebotsfragen liegen nicht auf diesem Wissensportal.</p></header><section className="faq-list">{entries.map((entry) => <details key={entry.question}><summary><span>{entry.pillar}</span>{entry.question}</summary><p>{entry.answer}</p><Link to={entry.path}>Im ausführlichen Artikel weiterlesen →</Link></details>)}</section><p className="scope-note boxed">Sechs geprüfte Fragen sind veröffentlicht. Acht weitere Fragen bleiben bis zur erforderlichen Fach- oder Quellenprüfung gesperrt und erscheinen weder hier noch im FAQ-Schema.</p></div></main>;
 }
