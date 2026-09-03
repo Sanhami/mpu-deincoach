@@ -21,4 +21,8 @@ export const staticRedirects = LEGACY_REDIRECTS
   .filter((item): item is typeof item & { to: string } => Boolean(item.to))
   .map((item) => ({ from: item.from, to: item.to, status: 301 }));
 
+export const staticGonePaths = LEGACY_REDIRECTS
+  .filter((item) => item.action === '410')
+  .map((item) => item.from);
+
 export const sitemapPaths = INDEXABLE_PATHS;

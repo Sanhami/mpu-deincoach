@@ -24,7 +24,13 @@ const sitemap = `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://w
 await writeFile(join(dist, 'sitemap.xml'), sitemap, 'utf8');
 
 const redirectManifest = server.staticRedirects;
+const goneManifest = server.staticGonePaths;
 await writeFile(join(dist, 'redirects-manifest.json'), JSON.stringify(redirectManifest, null, 2), 'utf8');
-await writeFile(join(dist, '_redirects'), `${redirectManifest.map((item) => `${item.from} ${item.to} ${item.status}`).join('\n')}\n/* /index.html 200\n`, 'utf8');
+await writeFile(join(dist, 'gone-manifest.json'), JSON.stringify(goneManifest, null, 2), 'utf8');
+await writeFile(
+  join(dist, '_redirects'),
+  `${redirectManifest.map((item) => `${item.from} ${item.to} ${item.status}`).join('\n')}\n${goneManifest.map((route) => `${route} ${route}index.html 410!`).join('\n')}\n`,
+  'utf8',
+);
 
 await rm(join(root, 'dist-server'), { recursive: true, force: true });

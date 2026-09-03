@@ -29,7 +29,7 @@ export function KnowledgeHeader() {
   return (
     <header className="site-header">
       <div className="header-bar wrap">
-        <Link className="brand" to="/" aria-label="MPU Wissen Startseite">
+        <Link className="brand" to="/">
           <span className="brand-mark" aria-hidden="true">M</span>
           <span><strong>MPU</strong> Wissen<small>von MPUdeincoach</small></span>
         </Link>

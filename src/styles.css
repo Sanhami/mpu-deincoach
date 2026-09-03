@@ -59,7 +59,7 @@ button, a, input, summary { -webkit-tap-highlight-color: transparent; }
 .scope-note { max-width: 680px; color: var(--muted); font-size: .86rem; line-height: 1.5; }
 .scope-note.boxed { margin-top: 2rem; padding: 1rem; border-left: 4px solid var(--signal); background: var(--soft); }
 .hero-search { position: relative; padding: 2rem; background: var(--white); border: 1px solid var(--ink); box-shadow: 10px 10px 0 var(--signal); }
-.search-index { position: absolute; right: 1.4rem; top: 1rem; color: #c8c5ba; font-family: var(--serif); font-size: 2rem; }
+.search-index { position: absolute; right: 1.4rem; top: 1rem; color: var(--muted); font-family: var(--serif); font-size: 2rem; }
 .search label { display: block; margin-bottom: 1rem; font-family: var(--serif); font-size: 1.5rem; font-weight: 700; }
 .search > div { display: flex; }
 .search input { width: 100%; min-height: 52px; padding: .85rem 1rem; border: 1px solid var(--ink); background: white; }
@@ -91,7 +91,7 @@ button, a, input, summary { -webkit-tap-highlight-color: transparent; }
 .pillar-card { min-height: 240px; padding: 1.6rem; border-right: 1px solid var(--line); border-bottom: 1px solid var(--line); background: var(--paper); text-decoration: none; }
 .pillar-card:nth-child(3n+1) { border-left: 0; }
 .pillar-card:not(.muted):hover { background: var(--signal); }
-.pillar-card.muted { color: #77766e; background: transparent; }
+.pillar-card.muted { color: var(--muted); background: transparent; }
 .pillar-card h3 { margin: 2.2rem 0 .65rem; font-family: var(--serif); font-size: 1.6rem; }
 .pillar-card p { color: var(--muted); line-height: 1.55; }
 .pillar-card .text-link { display: inline-block; margin-top: 1rem; }

@@ -1,0 +1,32 @@
+route,current_status,indexability,sitemap_inclusion,review_requirement,legal_requirement,release_blocker,recommended_release_state
+/,PUBLIC_READY,index,yes,none,none,none,PUBLIC_READY
+/wissen/,PUBLIC_READY,index,yes,none,none,none,PUBLIC_READY
+/ratgeber/,PUBLIC_READY,index,yes,none,none,none,PUBLIC_READY
+/glossar/,PUBLIC_READY,index,yes,none,none,none,PUBLIC_READY
+/ueber-uns/,PUBLIC_READY,index,yes,none,none,none,PUBLIC_READY
+/redaktion/,PUBLIC_READY,index,yes,none,none,none,PUBLIC_READY
+/redaktionsrichtlinien/,PUBLIC_READY,index,yes,none,none,none,PUBLIC_READY
+/korrekturen/,PUBLIC_READY,index,yes,none,none,none,PUBLIC_READY
+/faq/,NOINDEX_DRAFT,noindex,no,"fachlich; named reviewer",none,"content review and FAQ/main-site overlap adjustment",PUBLIC_AFTER_EDITORIAL_REVIEW
+/mpu-ablauf/,NOINDEX_DRAFT,noindex,no,"fachlich; named reviewer",as needed,"content review and main-site intent overlap adjustment",PUBLIC_AFTER_EDITORIAL_REVIEW
+/mpu-kosten/,NOINDEX_DRAFT,noindex,no,"fachlich; price currency; named reviewer",as needed,"content review and main-site overlap adjustment",PUBLIC_AFTER_EDITORIAL_REVIEW
+/alkohol-mpu/,NOINDEX_DRAFT,noindex,no,"fachlich; named reviewer",as needed,content review,PUBLIC_AFTER_EDITORIAL_REVIEW
+/drogen-mpu/,NOINDEX_DRAFT,noindex,no,"fachlich; named reviewer",as needed,content review,PUBLIC_AFTER_EDITORIAL_REVIEW
+/abstinenznachweis/,NOINDEX_DRAFT,noindex,no,"fachlich/CTU; named reviewer",as needed,"content review and main-site overlap adjustment",PUBLIC_AFTER_EDITORIAL_REVIEW
+/mpu-begutachtungsstelle/,NOINDEX_DRAFT,noindex,no,"fachlich; named reviewer",legal,"fachliche and legal sign-off",PUBLIC_AFTER_LEGAL_REVIEW
+/impressum/,NOINDEX_DRAFT,noindex,no,none,legal,"verified operator data and legal approval",PUBLIC_AFTER_LEGAL_REVIEW
+/datenschutz/,NOINDEX_DRAFT,noindex,no,none,legal,"processing inventory and approved privacy text",PUBLIC_AFTER_LEGAL_REVIEW
+/agb/,NOINDEX_DRAFT,noindex,no,none,legal,"decision whether AGB are needed; approved text if yes",PUBLIC_AFTER_LEGAL_REVIEW
+/404/,INTERNAL_ONLY,noindex,no,none,none,host behavior verification,INTERNAL_ONLY
+/404.html,INTERNAL_ONLY,noindex,no,none,none,host behavior verification,INTERNAL_ONLY
+/mpu-vorbereitung-ellwangen/,INTERNAL_ONLY,noindex,no,"legacy ownership decision",none,manual review unresolved,INTERNAL_ONLY
+/buchungsbestaetigung-mpu-deincoach/,GONE_410,noindex,no,none,none,generated 410 rule awaits staging verification,GONE_410
+/einrichtung-teams/,GONE_410,noindex,no,none,none,generated 410 rule awaits staging verification,GONE_410
+/mpu-vorbereitung-kaiserslautern/,GONE_410,noindex,no,none,none,generated 410 rule awaits staging verification,GONE_410
+/mpu-vorbereitung-covid-19/,GONE_410,noindex,no,none,none,generated 410 rule awaits staging verification,GONE_410
+/warenkorb/,GONE_410,noindex,no,none,none,generated 410 rule awaits staging verification,GONE_410
+/kasse/,GONE_410,noindex,no,none,none,generated 410 rule awaits staging verification,GONE_410
+/mein-konto/,GONE_410,noindex,no,none,none,generated 410 rule awaits staging verification,GONE_410
+/abstinenzradt/,GONE_410,noindex,no,none,none,generated 410 rule awaits staging verification,GONE_410
+/linkbaum/,GONE_410,noindex,no,none,none,generated 410 rule awaits staging verification,GONE_410
+/elementor-51115/,GONE_410,noindex,no,none,none,generated 410 rule awaits staging verification,GONE_410
