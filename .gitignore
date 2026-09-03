@@ -21,3 +21,6 @@ browser-qa-state/
 *.zip
 wp-config.php
 .gstack/
+
+# Local Netlify folder
+.netlify

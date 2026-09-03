@@ -37,9 +37,9 @@ export const SOURCES = {
     id: 'bast-guidelines',
     title: 'Begutachtungsleitlinien zur Kraftfahreignung',
     publisher: 'Bundesanstalt für Straßenwesen (BASt)',
-    url: 'https://www.bast.de/DE/Verkehrssicherheit/Fachthemen/BLL/Begutachtungsleitlinien-2018.html',
+    url: 'https://bast.opus.hbz-nrw.de/frontdoor/deliver/index/docId/2664/file/Begutachtungsleitlinien%202022.pdf',
     sourceType: 'official',
-    reviewedAt: '2026-09-02',
+    reviewedAt: '2026-09-03',
   },
   bk5Foundations: {
     id: 'bk5-foundations',
