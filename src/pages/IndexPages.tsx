@@ -6,7 +6,9 @@ import { isFAQPublic } from '../content/model';
 import { GLOSSARY, PILLARS } from '../content/pillars';
 
 export function KnowledgeIndexPage() {
-  return <main id="main-content"><div className="wrap"><Breadcrumbs items={[{ label: 'MPU Wissen' }]} /><header className="page-header"><span className="eyebrow">Wissen von A bis Z</span><h1>MPU-Themen im Zusammenhang verstehen</h1><p>Diese Übersicht trennt Grundlagen, Verfahren, Anlassgruppen und Nachweise. Nur Bereiche mit nützlichem Inhalt erhalten eine eigene Seite.</p></header><div className="pillar-grid page-grid">{PILLARS.map((pillar) => <PillarCard key={pillar.id} pillar={pillar} />)}</div></div></main>;
+  const live = PILLARS.filter((pillar) => pillar.path);
+  const review = PILLARS.filter((pillar) => !pillar.path);
+  return <main id="main-content"><div className="wrap"><Breadcrumbs items={[{ label: 'MPU Wissen' }]} /><header className="page-header"><span className="eyebrow">Wissen von A bis Z</span><h1>MPU-Themen im Zusammenhang verstehen</h1><p>Diese Übersicht trennt Verfahren, Anlassgruppen, Nachweise und praktische Orientierung. Nur Bereiche mit nützlichem Inhalt erhalten eine eigene Seite.</p></header><section className="knowledge-area" aria-labelledby="live-areas"><div className="section-heading compact"><div><span className="eyebrow">Direkt erreichbar</span><h2 id="live-areas">Aktive Wissensbereiche</h2></div><p>Jede Karte führt zu einer vorhandenen Seite. Der jeweilige Fachprüfstatus bleibt dort sichtbar.</p></div><div className="pillar-grid">{live.map((pillar) => <PillarCard key={pillar.id} pillar={pillar} />)}</div></section><section className="knowledge-area review-areas" aria-labelledby="review-areas"><div className="section-heading compact"><div><span className="eyebrow">Redaktionsplan</span><h2 id="review-areas">In redaktioneller Prüfung</h2></div><p>Diese Bereiche haben noch keine freigegebene Zielseite und sind deshalb bewusst nicht verlinkt.</p></div><div className="pillar-grid">{review.map((pillar) => <PillarCard key={pillar.id} pillar={pillar} />)}</div></section></div></main>;
 }
 
 export function GuideIndexPage() {

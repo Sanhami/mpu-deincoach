@@ -5,6 +5,7 @@ import { renderSeoHead } from './seo';
 import { INDEXABLE_PATHS } from './seo';
 import { ARTICLES } from './content/articles';
 import { LEGACY_REDIRECTS } from './config/redirects';
+import { SITE } from './config/site';
 
 export function render(url: string) {
   return { html: renderToString(<StaticRouter location={url}><App /></StaticRouter>), head: renderSeoHead(url) };
@@ -26,3 +27,4 @@ export const staticGonePaths = LEGACY_REDIRECTS
   .map((item) => item.from);
 
 export const sitemapPaths = INDEXABLE_PATHS;
+export const siteUrl = SITE.url;

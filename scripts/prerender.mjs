@@ -20,16 +20,22 @@ await writeFile(join(dist, '404.html'), template.replace('<!--app-head-->', notF
 
 const escapeXml = (value) => value.replaceAll('&', '&amp;').replaceAll('<', '&lt;').replaceAll('>', '&gt;');
 const sitemapPaths = server.sitemapPaths;
-const sitemap = `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${sitemapPaths.map((route) => `  <url><loc>${escapeXml(`https://mpu-deincoach.de${route}`)}</loc><lastmod>2026-09-02</lastmod></url>`).join('\n')}\n</urlset>\n`;
+const sitemap = `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${sitemapPaths.map((route) => `  <url><loc>${escapeXml(`${server.siteUrl}${route}`)}</loc></url>`).join('\n')}\n</urlset>\n`;
 await writeFile(join(dist, 'sitemap.xml'), sitemap, 'utf8');
 
 const redirectManifest = server.staticRedirects;
 const goneManifest = server.staticGonePaths;
+const redirectSources = new Set(redirectManifest.map((item) => item.from));
+const gonePaths = new Set(goneManifest);
+const directRoutePaths = [...new Set(server.staticPaths)]
+  .filter((route) => route !== '/' && route !== '/404/' && !redirectSources.has(route) && !gonePaths.has(route));
+const routeNormalizations = directRoutePaths.map((route) => `${route.replace(/\/$/, '')} ${route} 301`);
+const directRouteRewrites = directRoutePaths.map((route) => `${route} ${route}index.html 200`);
 await writeFile(join(dist, 'redirects-manifest.json'), JSON.stringify(redirectManifest, null, 2), 'utf8');
 await writeFile(join(dist, 'gone-manifest.json'), JSON.stringify(goneManifest, null, 2), 'utf8');
 await writeFile(
   join(dist, '_redirects'),
-  `${redirectManifest.map((item) => `${item.from} ${item.to} ${item.status}`).join('\n')}\n${goneManifest.map((route) => `${route} ${route}index.html 410!`).join('\n')}\n`,
+  `${routeNormalizations.join('\n')}\n${directRouteRewrites.join('\n')}\n${redirectManifest.map((item) => `${item.from} ${item.to} ${item.status}`).join('\n')}\n${goneManifest.map((route) => `${route} ${route}index.html 410!`).join('\n')}\n`,
   'utf8',
 );
 

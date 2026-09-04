@@ -74,7 +74,10 @@ for (const field of ['title', 'description', 'canonical']) {
 }
 
 const sitemap = await readFile(join(dist, 'sitemap.xml'), 'utf8');
-const sitemapRoutes = [...sitemap.matchAll(/<loc>https:\/\/mpu-deincoach\.de([^<]*)<\/loc>/g)].map((match) => match[1] || '/');
+const productionOrigin = 'https://mpudeincoach-wissen.de';
+const sitemapUrls = [...sitemap.matchAll(/<loc>([^<]*)<\/loc>/g)].map((match) => match[1]);
+const sitemapRoutes = sitemapUrls.filter((url) => url.startsWith(productionOrigin)).map((url) => url.slice(productionOrigin.length) || '/');
+if (sitemapUrls.some((url) => !url.startsWith(productionOrigin))) failures.push('sitemap contains a URL outside the production domain');
 const expectedIndexable = indexable.map(({ route }) => route).filter((route) => route !== '/404.html').sort();
 if (JSON.stringify([...sitemapRoutes].sort()) !== JSON.stringify(expectedIndexable)) failures.push('sitemap does not exactly match indexable HTML routes');
 
@@ -99,6 +102,11 @@ if (goneManifest.length !== 10 || new Set(goneManifest).size !== 10) failures.pu
 for (const route of goneManifest) {
   if (!htmlByRoute.has(route)) failures.push(`${route}: gone manifest route has no prerendered page`);
   if (!hostRules.includes(`${route} ${route}index.html 410!`)) failures.push(`${route}: missing forced host-level 410 rule`);
+}
+const directRoutes = [...htmlByRoute.keys()].filter((route) => !['/', '/404.html', '/404/'].includes(route) && !redirectSources.has(route) && !goneManifest.includes(route));
+for (const route of directRoutes) {
+  if (!hostRules.includes(`${route} ${route}index.html 200`)) failures.push(`${route}: missing explicit direct-route rewrite`);
+  if (!hostRules.includes(`${route.replace(/\/$/, '')} ${route} 301`)) failures.push(`${route}: missing trailing-slash normalization`);
 }
 if (/\/\*\s+\/index\.html\s+200/.test(hostRules)) failures.push('SPA catch-all would mask real 404 responses');
 

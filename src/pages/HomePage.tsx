@@ -1,13 +1,13 @@
 import { Link } from 'react-router-dom';
-import { ARTICLES } from '../content/articles';
 import { PILLARS } from '../content/pillars';
-import { KnowledgeCard, PillarCard } from '../components/Cards';
+import { PillarCard } from '../components/Cards';
 import { Search, SearchResults } from '../components/Search';
 
 const situations = [
   ['Ich möchte den Ablauf verstehen', '/mpu-ablauf/', 'Schritte, Rollen und Untersuchung einordnen'],
   ['Meine MPU hat mit Alkohol zu tun', '/alkohol-mpu/', 'Konsummuster, Veränderung und Nachweise'],
   ['Meine MPU hat mit Drogen zu tun', '/drogen-mpu/', 'Anlass, Aufarbeitung und CTU-Wissen'],
+  ['Ich möchte Kosten verstehen', '/mpu-kosten/', 'Kostenblöcke und Einflussfaktoren einordnen'],
   ['Ich brauche Informationen zu Nachweisen', '/abstinenznachweis/', 'Haar, Urin und Qualitätsmerkmale'],
   ['Ich suche eine Begutachtungsstelle', '/mpu-begutachtungsstelle/', 'Auswahl, Akte und praktische Kriterien'],
   ['Ich habe eine allgemeine Frage', '/faq/', 'Antworten nach Themen sortiert'],
@@ -35,14 +35,9 @@ export function HomePage() {
 
       <section className="section section-tint">
         <div className="wrap">
-          <div className="section-heading"><div><span className="eyebrow">Wissenslandkarte</span><h2>Die wichtigsten Themen</h2></div><p>Veröffentlichte Bereiche sind direkt erreichbar. Weitere Themen bleiben sichtbar als Redaktionsplan, aber ohne leere SEO-Seiten.</p></div>
-          <div className="pillar-grid">{PILLARS.map((pillar) => <PillarCard key={pillar.id} pillar={pillar} />)}</div>
+          <div className="section-heading"><div><span className="eyebrow">Wissenslandkarte</span><h2>Die wichtigsten Themen</h2></div><p>Vorhandene Bereiche sind direkt erreichbar und zeigen ihren Prüfstatus auf der Zielseite. Weitere Themen bleiben als Redaktionsplan sichtbar, aber ohne leere SEO-Seiten.</p></div>
+          <div className="pillar-grid">{PILLARS.filter((pillar) => pillar.path).map((pillar) => <PillarCard key={pillar.id} pillar={pillar} />)}</div>
         </div>
-      </section>
-
-      <section className="section wrap" aria-labelledby="guides-title">
-        <div className="section-heading"><div><span className="eyebrow">Aktuelle Arbeitsfassungen</span><h2 id="guides-title">Wichtige Guides im Fachreview</h2></div><p>Diese Artikel sind technisch fertig, bleiben aber bis zur namentlichen Fachfreigabe von Suchmaschinen ausgeschlossen.</p></div>
-        <div className="card-grid">{ARTICLES.slice(0, 6).map((article) => <KnowledgeCard key={article.id} article={article} />)}</div>
       </section>
 
       <section className="editorial-band">
@@ -60,7 +55,7 @@ export function HomePage() {
 
       <section className="section wrap about-strip">
         <span className="about-monogram" aria-hidden="true">W</span>
-        <div><span className="eyebrow">Über dieses Portal</span><h2>Wissen und persönliche Hilfe haben getrennte Aufgaben.</h2><p>mpu-deincoach.de erklärt. mpudeincoach.de berät und bietet Vorbereitung an. Diese Trennung schützt vor doppelten Inhalten und macht klar, wann allgemeines Wissen endet.</p><Link to="/ueber-uns/" className="text-link">Portal und Redaktion kennenlernen →</Link></div>
+        <div><span className="eyebrow">Über dieses Portal</span><h2>Wissen und persönliche Hilfe haben getrennte Aufgaben.</h2><p>mpudeincoach-wissen.de erklärt. mpudeincoach.de berät und bietet Vorbereitung an. Diese Trennung schützt vor doppelten Inhalten und macht klar, wann allgemeines Wissen endet.</p><Link to="/ueber-uns/" className="text-link">Portal und Redaktion kennenlernen →</Link></div>
       </section>
 
       <section className="wrap transition-card">

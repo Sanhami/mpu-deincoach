@@ -1,4 +1,4 @@
-import { EDITORIAL_TEAM } from '../config/site';
+import { EDITORIAL_TEAM, SITE } from '../config/site';
 import type { Article } from './model';
 import { SOURCES } from './sources';
 
@@ -52,7 +52,7 @@ export const ARTICLES: Article[] = [
     ctaTarget: 'FALLANALYSE',
     metaTitle: 'MPU-Verfahren: Rollen und Aktenfluss | MPU Wissen',
     metaDescription: 'MPU-Verfahren neutral erklärt: Rollen von Behörde und Begutachtungsstelle, Aktenübermittlung, Untersuchung und Gutachten.',
-    canonical: 'https://mpu-deincoach.de/mpu-ablauf/',
+    canonical: `${SITE.url}/mpu-ablauf/`,
   },
   {
     ...common,
@@ -98,7 +98,7 @@ export const ARTICLES: Article[] = [
     ctaTarget: 'FALLANALYSE',
     metaTitle: 'MPU-Kosten: Bestandteile verstehen | MPU Wissen',
     metaDescription: 'MPU-Kosten neutral einordnen: Kostenblöcke, Quellen und Aktualitätsregeln ohne Paketvergleich oder veraltete Pauschalpreise.',
-    canonical: 'https://mpu-deincoach.de/mpu-kosten/',
+    canonical: `${SITE.url}/mpu-kosten/`,
   },
   {
     ...common,
@@ -133,7 +133,7 @@ export const ARTICLES: Article[] = [
     ctaTarget: 'ALKOHOL',
     metaTitle: 'Alkohol-MPU: Grundlagen verstehen | MPU Wissen',
     metaDescription: 'Alkohol-MPU verständlich einordnen: Konsumgeschichte, Veränderung, Risikoverständnis und Nachweise – ohne pauschale Versprechen.',
-    canonical: 'https://mpu-deincoach.de/alkohol-mpu/',
+    canonical: `${SITE.url}/alkohol-mpu/`,
   },
   {
     ...common,
@@ -169,7 +169,7 @@ export const ARTICLES: Article[] = [
     ctaTarget: 'FALLANALYSE',
     metaTitle: 'Drogen-MPU: Ablauf und Nachweise | MPU Wissen',
     metaDescription: 'Drogen-MPU als Wissensübersicht: Anlass, Konsumverlauf, Veränderung und Nachweise differenziert verstehen.',
-    canonical: 'https://mpu-deincoach.de/drogen-mpu/',
+    canonical: `${SITE.url}/drogen-mpu/`,
   },
   {
     ...common,
@@ -203,7 +203,7 @@ export const ARTICLES: Article[] = [
     ctaTarget: 'ABSTINENZ',
     metaTitle: 'Abstinenznachweis MPU: Methoden verstehen | MPU Wissen',
     metaDescription: 'Abstinenznachweis für die MPU: Haaranalyse, Urinkontrollprogramm, Qualitätsmerkmale und typische Fehler verständlich erklärt.',
-    canonical: 'https://mpu-deincoach.de/abstinenznachweis/',
+    canonical: `${SITE.url}/abstinenznachweis/`,
   },
   {
     ...common,
@@ -253,7 +253,7 @@ export const ARTICLES: Article[] = [
     ctaTarget: 'MPU_VORBEREITUNG',
     metaTitle: 'MPU-Begutachtungsstelle wählen | MPU Wissen',
     metaDescription: 'MPU-Begutachtungsstelle wählen: amtliche Anerkennung, Auswahl, Fahrerlaubnisakte, Wechsel, Unterschiede und praktische Kriterien.',
-    canonical: 'https://mpu-deincoach.de/mpu-begutachtungsstelle/',
+    canonical: `${SITE.url}/mpu-begutachtungsstelle/`,
   },
 ];
 

@@ -30,7 +30,7 @@ export function KnowledgeFooter() {
           <a href="https://mpudeincoach.de">Persönliche Hilfe bei deinem MPU-Fall ↗</a>
         </div>
       </div>
-      <div className="wrap footer-bottom">© 2026 MPUdeincoach Wissen <span>Stand der redaktionellen Systemprüfung: 2. September 2026</span></div>
+      <div className="wrap footer-bottom">© 2026 MPUdeincoach Wissen <span>Stand der redaktionellen Systemprüfung: 4. September 2026</span></div>
     </footer>
   );
 }

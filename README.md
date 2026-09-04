@@ -1,6 +1,6 @@
 # MPU Wissen
 
-Statisch prerenderter React-Wissenshub für `mpu-deincoach.de`. Das Repository enthält ausschließlich die veröffentlichungsfähige Anwendung und ihre legitimen Projektdateien. Private Wissensdatenbanken, Transferquellen, WordPress-Bestände, Kundendaten und Backups gehören nicht in dieses Repository.
+Statisch prerenderter React-Wissenshub für `mpudeincoach-wissen.de`. Das Repository enthält ausschließlich die veröffentlichungsfähige Anwendung und ihre legitimen Projektdateien. Private Wissensdatenbanken, Transferquellen, WordPress-Bestände, Kundendaten und Backups gehören nicht in dieses Repository.
 
 ## Lokal arbeiten
 
@@ -11,7 +11,7 @@ npm ci
 npm run dev
 ```
 
-`VITE_SITE_URL` legt die kanonische Basis-URL fest. Die Voreinstellung und `.env.example` verwenden `https://mpu-deincoach.de`. Auch auf Staging bleibt die Produktions-URL kanonisch. Der aktuelle Build sendet vorsorglich global `X-Robots-Tag: noindex, nofollow`; dieser Header darf erst in einem gesonderten, freigegebenen Produktions-Release entfernt werden.
+`VITE_SITE_URL` legt die kanonische Basis-URL fest. Die Voreinstellung und `.env.example` verwenden `https://mpudeincoach-wissen.de`. Auch auf Staging bleibt die Produktions-URL kanonisch. Der aktuelle Netlify-Staging-Build sendet vorsorglich global `X-Robots-Tag: noindex, nofollow`; dieser Header darf dort erst in einem gesonderten, freigegebenen Produktions-Release entfernt werden.
 
 ## Qualität und Build
 

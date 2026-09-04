@@ -8,7 +8,7 @@ describe('prerender output', () => {
     const result = render('/');
     expect(h1Count(result.html)).toBe(1);
     expect(result.html).toContain('MPU Wissen');
-    expect(result.head).toContain('<link rel="canonical" href="https://mpu-deincoach.de/">');
+    expect(result.head).toContain('<link rel="canonical" href="https://mpudeincoach-wissen.de/">');
     expect(result.head).toContain('SearchAction');
   });
 

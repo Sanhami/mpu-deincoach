@@ -1,6 +1,6 @@
 import type { PersonRef } from '../content/model';
 
-const siteUrl = (import.meta.env.VITE_SITE_URL || 'https://mpu-deincoach.de').replace(/\/+$/, '');
+const siteUrl = (import.meta.env.VITE_SITE_URL || 'https://mpudeincoach-wissen.de').replace(/\/+$/, '');
 
 export const SITE = {
   name: 'MPUdeincoach Wissen',

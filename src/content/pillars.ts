@@ -1,7 +1,7 @@
 import type { GlossaryTerm, Pillar } from './model';
 
 export const PILLARS: Pillar[] = [
-  { id: 'grundlagen', title: 'MPU Grundlagen', description: 'Begriffe, Anlässe und die wichtigsten Zusammenhänge für den Einstieg.', path: '/wissen/', state: 'available' },
+  { id: 'grundlagen', title: 'MPU Grundlagen', description: 'Der eigenständige Grundlagenbereich wird erst mit belastbarer Inhaltstiefe freigeschaltet.', state: 'review' },
   { id: 'vorbereitung', title: 'Vorbereitung verstehen', description: 'Methoden, Grenzen und Qualitätsmerkmale – ohne Angebotsverkauf.', state: 'review' },
   { id: 'ablauf', title: 'MPU Ablauf', description: 'Vom Gutachtenauftrag über die Untersuchung bis zum Ergebnis.', path: '/mpu-ablauf/', state: 'available' },
   { id: 'kosten', title: 'MPU Kosten', description: 'Kostenblöcke und Einflussfaktoren neutral einordnen.', path: '/mpu-kosten/', state: 'available' },

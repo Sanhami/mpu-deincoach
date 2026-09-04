@@ -17,7 +17,7 @@ const CUSTOM: Record<string, Omit<SeoData, 'canonical'>> = {
   '/ratgeber/': { title: 'MPU-Ratgeber | MPU Wissen', description: 'Quellenorientierte MPU-Ratgeber mit dokumentiertem Status, Quellen und transparentem Fachreview.', indexability: 'index', type: 'website' },
   '/glossar/': { title: 'MPU-Glossar: wichtige Begriffe | MPU Wissen', description: 'Wichtige MPU-Begriffe kurz, verständlich und im richtigen Zusammenhang erklärt.', indexability: 'index', type: 'website' },
   '/faq/': { title: 'Häufige Fragen zur MPU | MPU Wissen', description: 'Fachlich freigegebene Fragen zur MPU nach Themen sortiert und ohne doppelte Service-FAQ.', indexability: 'index', type: 'website' },
-  '/ueber-uns/': { title: 'Über das Wissensportal | MPU Wissen', description: 'Aufgabe, Grenzen und redaktionelles Modell von mpu-deincoach.de.', indexability: 'index', type: 'website' },
+  '/ueber-uns/': { title: 'Über das Wissensportal | MPU Wissen', description: 'Aufgabe, Grenzen und redaktionelles Modell von mpudeincoach-wissen.de.', indexability: 'index', type: 'website' },
   '/redaktion/': { title: 'Redaktion und Fachprüfung | MPU Wissen', description: 'Rollen, Verantwortlichkeiten und Freigabestatus der MPU-Wissen-Redaktion.', indexability: 'index', type: 'website' },
   '/redaktionsrichtlinien/': { title: 'Redaktionsrichtlinien | MPU Wissen', description: 'Quellen-, Review- und Korrekturstandards für das MPU-Wissensportal.', indexability: 'index', type: 'website' },
   '/korrekturen/': { title: 'Korrekturen und Hinweise | MPU Wissen', description: 'So werden sachliche Hinweise und materiale Korrekturen im MPU-Wissensportal behandelt.', indexability: 'index', type: 'website' },
