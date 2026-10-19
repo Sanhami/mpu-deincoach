@@ -13,9 +13,10 @@ export function render(url: string) {
 
 export const staticPaths = [
   '/', '/wissen/', '/ratgeber/', '/faq/', '/glossar/', '/ueber-uns/', '/redaktion/',
-  '/redaktionsrichtlinien/', '/korrekturen/', '/impressum/', '/datenschutz/', '/agb/', '/404/',
+  '/redaktionsrichtlinien/', '/korrekturen/', '/impressum/', '/datenschutz/', '/agb/',
   ...ARTICLES.map((article) => article.slug),
-  ...LEGACY_REDIRECTS.filter((item) => item.action === '410' || item.action === 'MANUAL_REVIEW').map((item) => item.from),
+  // MANUAL_REVIEW routes are intentionally not prerendered: until decided they answer with a real 404.
+  ...LEGACY_REDIRECTS.filter((item) => item.action === '410').map((item) => item.from),
 ];
 
 export const staticRedirects = LEGACY_REDIRECTS

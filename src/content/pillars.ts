@@ -3,7 +3,7 @@ import type { GlossaryTerm, Pillar } from './model';
 export const PILLARS: Pillar[] = [
   { id: 'grundlagen', title: 'MPU Grundlagen', description: 'Der eigenständige Grundlagenbereich wird erst mit belastbarer Inhaltstiefe freigeschaltet.', state: 'review' },
   { id: 'vorbereitung', title: 'Vorbereitung verstehen', description: 'Methoden, Grenzen und Qualitätsmerkmale – ohne Angebotsverkauf.', state: 'review' },
-  { id: 'ablauf', title: 'MPU Ablauf', description: 'Vom Gutachtenauftrag über die Untersuchung bis zum Ergebnis.', path: '/mpu-ablauf/', state: 'available' },
+  { id: 'ablauf', title: 'MPU Ablauf', description: 'Vom Gutachtenauftrag über die Untersuchung bis zum Ergebnis.', path: '/mpu-verfahren/', state: 'available' },
   { id: 'kosten', title: 'MPU Kosten', description: 'Kostenblöcke und Einflussfaktoren neutral einordnen.', path: '/mpu-kosten/', state: 'available' },
   { id: 'alkohol', title: 'Alkohol MPU', description: 'Konsummuster, Veränderung und Nachweise fachlich unterscheiden.', path: '/alkohol-mpu/', state: 'available' },
   { id: 'drogen', title: 'Drogen MPU', description: 'Anlässe, Aufarbeitung und Nachweisfragen im Überblick.', path: '/drogen-mpu/', state: 'available' },
@@ -21,8 +21,8 @@ export const PILLARS: Pillar[] = [
 export const GLOSSARY: GlossaryTerm[] = [
   { term: 'Begutachtungsstelle für Fahreignung (BfF)', definition: 'Eine amtlich anerkannte Stelle, die Fahreignungsbegutachtungen durchführt.', relatedPath: '/mpu-begutachtungsstelle/' },
   { term: 'Fahreignung', definition: 'Die körperliche, geistige und charakterliche Eignung zum sicheren Führen von Kraftfahrzeugen.' },
-  { term: 'Fragestellung', definition: 'Die von der Fahrerlaubnisbehörde formulierte Frage, die das Gutachten beantworten soll.', relatedPath: '/mpu-ablauf/' },
+  { term: 'Fragestellung', definition: 'Die von der Fahrerlaubnisbehörde formulierte Frage, die das Gutachten beantworten soll.', relatedPath: '/mpu-verfahren/' },
   { term: 'CTU', definition: 'Chemisch-toxikologische Untersuchung; ein Sammelbegriff für fachlich geregelte Laboruntersuchungen.', relatedPath: '/abstinenznachweis/' },
   { term: 'Abstinenznachweis', definition: 'Dokumentierter Nachweis über einen festgelegten Zeitraum unter vorgegebenen Kontrollbedingungen.', relatedPath: '/abstinenznachweis/' },
-  { term: 'Anlassbezogenheit', definition: 'Grundsatz, dass die Untersuchung sich an der behördlichen Fragestellung und fahreignungsrelevanten Umständen orientiert.', relatedPath: '/mpu-ablauf/' },
+  { term: 'Anlassbezogenheit', definition: 'Grundsatz, dass die Untersuchung sich an der behördlichen Fragestellung und fahreignungsrelevanten Umständen orientiert.', relatedPath: '/mpu-verfahren/' },
 ];

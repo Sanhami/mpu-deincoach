@@ -46,7 +46,10 @@ for (const [route, html] of htmlByRoute) {
   const h1Count = (html.match(/<h1(?:\s|>)/gi) || []).length;
   if (!title) failures.push(`${route}: missing title`);
   if (!description) failures.push(`${route}: missing meta description`);
-  if (!canonical) failures.push(`${route}: missing canonical`);
+  // Error pages (404.html, 410 pages) must not declare a canonical; every real page needs an exact self-canonical.
+  const isStatusPage = route === '/404.html' || /<title>(Inhalt entfernt|Seite nicht gefunden) \| MPU Wissen<\/title>/.test(html);
+  if (isStatusPage && (canonical || /property=["']og:url["']/.test(html))) failures.push(`${route}: error page declares canonical/og:url ${canonical ?? ''}`);
+  if (!isStatusPage && canonical !== `https://mpudeincoach-wissen.de${route}`) failures.push(`${route}: expected self-canonical, found ${canonical ?? '(missing)'}`);
   if (h1Count !== 1) failures.push(`${route}: expected one H1, found ${h1Count}`);
   if (!/noindex/i.test(robots)) indexable.push({ route, title, description, canonical });
 
@@ -94,8 +97,32 @@ for (const { from, to, status } of redirects) {
 }
 
 const goneCount = [...htmlByRoute.values()].filter((html) => html.includes('<title>Inhalt entfernt | MPU Wissen</title>')).length;
-if (htmlFiles.length !== 31) failures.push(`expected 31 HTML files, found ${htmlFiles.length}`);
-if (indexable.length !== 11) failures.push(`expected 11 indexable pages, found ${indexable.length}`);
+// 29 = 12 static pages + 6 articles + 10 gone pages + 404.html (undecided MANUAL_REVIEW routes stay real 404s)
+if (htmlFiles.length !== 29) failures.push(`expected 29 HTML files, found ${htmlFiles.length}`);
+const redirectSource = await readFile(join(root, 'src', 'config', 'redirects.ts'), 'utf8');
+const manualReview = [...redirectSource.matchAll(/from: '([^']+)', action: 'MANUAL_REVIEW'/g)].map((match) => match[1]);
+if (!manualReview.length) failures.push('no MANUAL_REVIEW route found in src/config/redirects.ts; update the crawl guard');
+for (const route of manualReview) {
+  if (htmlByRoute.has(route)) failures.push(`${route}: MANUAL_REVIEW route must not be prerendered (would answer 200)`);
+}
+if (htmlByRoute.has('/404/')) failures.push('/404/: duplicate crawlable 404 page');
+const hostHeaders = await readFile(join(dist, '_headers'), 'utf8');
+const globalNoindex = /^\/\*\r?\n(?:[ \t]+.+\r?\n)*?[ \t]+X-Robots-Tag: noindex, nofollow\r?$/m.test(hostHeaders);
+if (process.env.SITE_INDEXING === 'allow') {
+  if (/X-Robots-Tag/i.test(hostHeaders)) failures.push('SITE_INDEXING=allow but dist/_headers still sends X-Robots-Tag');
+} else if (!globalNoindex) failures.push('dist/_headers lacks the global "X-Robots-Tag: noindex, nofollow" (default must stay non-indexable)');
+const robotsTxt = await readFile(join(dist, 'robots.txt'), 'utf8');
+for (const [, rule] of robotsTxt.matchAll(/^Disallow:\s*(\S+)/gim)) {
+  for (const route of htmlByRoute.keys()) if (route.startsWith(rule)) failures.push(`robots.txt disallows ${route}; crawlers could not see its noindex`);
+}
+for (const [route, html] of htmlByRoute) {
+  for (const [, json] of html.matchAll(/<script type="application\/ld\+json"[^>]*>([\s\S]*?)<\/script>/g)) {
+    try { const data = JSON.parse(json); if (data['@context'] !== 'https://schema.org' || !data['@type']) failures.push(`${route}: JSON-LD without @context/@type`); }
+    catch { failures.push(`${route}: invalid JSON-LD`); }
+  }
+}
+// 8 = hub and trust pages; articles and an empty /faq/ stay noindex (owner decision O-14, 19.10.2026)
+if (indexable.length !== 8) failures.push(`expected 8 indexable pages, found ${indexable.length}`);
 if (redirects.length !== 18) failures.push(`expected 18 redirects, found ${redirects.length}`);
 if (goneCount !== 10) failures.push(`expected 10 gone pages, found ${goneCount}`);
 if (goneManifest.length !== 10 || new Set(goneManifest).size !== 10) failures.push('gone manifest must contain 10 unique routes');

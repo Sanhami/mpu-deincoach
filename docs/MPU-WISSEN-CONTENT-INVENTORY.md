@@ -11,7 +11,7 @@ Dieses Inventar dokumentiert die kanonischen Rollen der vorhandenen Seiten. Die 
 | `/ratgeber/` | Ratgeberübersicht | HUB | Wissen | indexierbar | Status je Artikel | Artikel finden |
 | `/faq/` | Freigegebene FAQ | FAQ | Wissen | indexierbar | 6 freigegeben, 8 reviewpflichtig | kurze Antworten |
 | `/glossar/` | Kuratiertes Glossar | GLOSSARY | Wissen | indexierbar | keine Thin-Content-Einzelseiten | Begriffe verstehen |
-| `/mpu-ablauf/` | Rollen, Akte und Gutachten | ARTICLE | Ablauf | `APPROVED_PUBLIC` | FeV / BK5-Grundlagen | institutionelle Rollen und Aktenfluss |
+| `/mpu-verfahren/` | Rollen, Akte und Gutachten | ARTICLE | Ablauf | `APPROVED_PUBLIC` | FeV / BK5-Grundlagen | institutionelle Rollen und Aktenfluss |
 | `/mpu-kosten/` | Bestandteile und Einflussfaktoren | ARTICLE | Kosten | `FACHREVIEW_REQUIRED` | aktuelle umfassende Preisquelle fehlt | neutrale Kostensystematik |
 | `/alkohol-mpu/` | Grundlagen und Wissensübersicht | ARTICLE | Alkohol | `FACHREVIEW_REQUIRED` | MPU-Fachreview erforderlich | Risiko, Veränderung, Nachweise |
 | `/drogen-mpu/` | Anlässe, Ablauf und Nachweise | ARTICLE | Drogen | `FACHREVIEW_REQUIRED` | MPU-Fachreview erforderlich | Anlass und Nachweisgrenzen |

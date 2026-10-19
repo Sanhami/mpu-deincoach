@@ -14,7 +14,8 @@ function RouteContent() {
   const { pathname } = useLocation();
   const normalized = pathname === '/' ? '/' : `${pathname.replace(/\/+$/, '')}/`;
   const redirect = redirectForPath(normalized);
-  if (redirect?.action === '410' || redirect?.action === 'MANUAL_REVIEW') return <GonePage />;
+  if (redirect?.action === '410') return <GonePage />;
+  if (redirect?.action === 'MANUAL_REVIEW') return <NotFoundPage />;
   if (redirect?.to) return redirect.to.startsWith('http') ? <ExternalRedirectPage target={redirect.to} /> : <Navigate to={redirect.to} replace />;
   return (
     <Routes>
