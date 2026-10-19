@@ -1,7 +1,7 @@
 :root {
   color: #282828;
   background: #f7f6f1;
-  font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  font-family: var(--sans);
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   --ink: #282828;
@@ -14,7 +14,9 @@
   --green: #245b45;
   --max: 1180px;
   --reading: 720px;
-  --serif: Georgia, "Times New Roman", serif;
+  /* Markenschrift wie mpudeincoach.de: Systemschriften, kein Webfont-Nachladen */
+  --sans: "Helvetica Neue", Helvetica, Arial, -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+  --serif: var(--sans);
 }
 
 * { box-sizing: border-box; }
@@ -149,7 +151,7 @@ button, a, input, summary { -webkit-tap-highlight-color: transparent; }
 .faq-list { margin-bottom: 2rem; border-top: 1px solid var(--ink); }
 .faq-list details, .faq-section details { border-bottom: 1px solid var(--line); }
 .faq-list summary, .faq-section summary { padding: 1.4rem 2.5rem 1.4rem 0; cursor: pointer; font-family: var(--serif); font-size: 1.2rem; font-weight: 700; }
-.faq-list summary span { display: block; margin-bottom: .35rem; color: var(--muted); font: 800 .65rem Inter, sans-serif; letter-spacing: .1em; text-transform: uppercase; }
+.faq-list summary span { display: block; margin-bottom: .35rem; color: var(--muted); font: 800 .65rem var(--sans); letter-spacing: .1em; text-transform: uppercase; }
 .faq-list details p, .faq-section details p { line-height: 1.7; }
 .faq-list details a { display: inline-block; margin-bottom: 1.4rem; font-weight: 800; }
 
@@ -181,7 +183,7 @@ button, a, input, summary { -webkit-tap-highlight-color: transparent; }
 .callout { margin: 2.5rem 0; padding: 1.5rem; border-left: 5px solid var(--ink); background: var(--soft); }
 .callout.important { border-color: #a45a2a; background: #fff3e4; }
 .callout.reflection { border-color: var(--signal); background: #fffbd8; }
-.callout > strong { font-family: Inter, sans-serif; font-size: .75rem; letter-spacing: .08em; text-transform: uppercase; }
+.callout > strong { font-family: var(--sans); font-size: .75rem; letter-spacing: .08em; text-transform: uppercase; }
 .callout p { margin-bottom: 0; }
 .faq-section, .sources { margin-top: 4rem; padding-top: 2rem; border-top: 1px solid var(--ink); }
 .faq-section h2, .sources h2 { margin-top: .6rem; }
@@ -189,19 +191,19 @@ button, a, input, summary { -webkit-tap-highlight-color: transparent; }
 .sources li { margin-bottom: 1rem; padding: 1rem; border: 1px solid var(--line); background: var(--white); }
 .sources li strong, .sources li span, .sources li a { display: block; }
 .sources li strong { line-height: 1.35; }
-.sources li span { color: var(--muted); font: .75rem/1.5 Inter, sans-serif; }
-.sources li a { margin-top: .6rem; font: 800 .8rem Inter, sans-serif; }
-.update-info { margin-top: 2rem; color: var(--muted); font: .78rem/1.6 Inter, sans-serif; }
+.sources li span { color: var(--muted); font: .75rem/1.5 var(--sans); }
+.sources li a { margin-top: .6rem; font: 800 .8rem var(--sans); }
+.update-info { margin-top: 2rem; color: var(--muted); font: .78rem/1.6 var(--sans); }
 .person-card { display: grid; grid-template-columns: 64px 1fr; gap: 1.2rem; margin-top: 3rem; padding: 1.5rem; border: 1px solid var(--ink); background: var(--white); }
 .person-card .avatar { display: grid; width: 64px; height: 64px; place-items: center; background: var(--ink); color: var(--signal); font-size: 1.8rem; }
 .person-card h2, .reviewer-card h2 { margin: .3rem 0; font-size: 1.4rem; }
-.person-card p { margin: .4rem 0; font: .85rem/1.6 Inter, sans-serif; }
-.person-card a { font: 800 .8rem Inter, sans-serif; }
+.person-card p { margin: .4rem 0; font: .85rem/1.6 var(--sans); }
+.person-card a { font: 800 .8rem var(--sans); }
 .reviewer-card { margin-top: 1rem; padding: 1.5rem; border: 1px dashed #a45a2a; background: #fff6e9; }
-.reviewer-card p { margin-bottom: 0; font: .85rem/1.6 Inter, sans-serif; }
+.reviewer-card p { margin-bottom: 0; font: .85rem/1.6 var(--sans); }
 .article-cta { margin-top: 3rem; padding: 2rem; border: 1px solid var(--ink); background: var(--signal); }
 .article-cta h2 { margin: .6rem 0; font-size: 2rem; }
-.article-cta p { font: 1rem/1.6 Inter, sans-serif; }
+.article-cta p { font: 1rem/1.6 var(--sans); }
 .related { padding: 4rem 0 7rem; border-top: 1px solid var(--line); }
 .related h2 { margin: .6rem 0 2rem; font-family: var(--serif); font-size: 2.5rem; }
 .prose { margin-bottom: 7rem; font-family: var(--serif); font-size: 1.1rem; line-height: 1.8; }
@@ -263,7 +265,7 @@ button, a, input, summary { -webkit-tap-highlight-color: transparent; }
   .about-strip { grid-template-columns: 1fr; gap: 2rem; }
   .about-monogram { width: 160px; }
   .transition-card { align-items: flex-start; flex-direction: column; }
-  .article-header h1 { font-size: clamp(2.8rem, 13vw, 4.8rem); overflow-wrap: break-word; }
+  .article-header h1 { font-size: clamp(2.1rem, 9vw, 4.8rem); overflow-wrap: break-word; }
   .article-meta { grid-template-columns: repeat(2, 1fr); }
   .article-meta div, .article-meta div:first-child { padding: .85rem .4rem; }
   .article-meta div:nth-child(2) { border-right: 0; }
@@ -295,3 +297,6 @@ button, a, input, summary { -webkit-tap-highlight-color: transparent; }
   html { scroll-behavior: auto; }
   *, *::before, *::after { scroll-behavior: auto !important; transition: none !important; }
 }
+
+/* WCAG 2.5.8: alleinstehende Textlinks mit mindestens 24px Zielhöhe */
+.faq-list details a, .policy-links a, .person-card a, a.text-link { display: inline-flex; align-items: center; min-height: 24px; }
