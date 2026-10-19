@@ -1,5 +1,6 @@
 import { readFile, readdir } from 'node:fs/promises';
 import { join, relative, sep } from 'node:path';
+import { indexingDecision } from './indexing-policy.mjs';
 
 const root = process.cwd();
 const dist = join(root, 'dist');
@@ -108,8 +109,8 @@ for (const route of manualReview) {
 if (htmlByRoute.has('/404/')) failures.push('/404/: duplicate crawlable 404 page');
 const hostHeaders = await readFile(join(dist, '_headers'), 'utf8');
 const globalNoindex = /^\/\*\r?\n(?:[ \t]+.+\r?\n)*?[ \t]+X-Robots-Tag: noindex, nofollow\r?$/m.test(hostHeaders);
-if (process.env.SITE_INDEXING === 'allow') {
-  if (/X-Robots-Tag/i.test(hostHeaders)) failures.push('SITE_INDEXING=allow but dist/_headers still sends X-Robots-Tag');
+if (indexingDecision().lift) {
+  if (/X-Robots-Tag/i.test(hostHeaders)) failures.push('indexing policy lifts noindex but dist/_headers still sends X-Robots-Tag');
 } else if (!globalNoindex) failures.push('dist/_headers lacks the global "X-Robots-Tag: noindex, nofollow" (default must stay non-indexable)');
 const robotsTxt = await readFile(join(dist, 'robots.txt'), 'utf8');
 for (const [, rule] of robotsTxt.matchAll(/^Disallow:\s*(\S+)/gim)) {

@@ -9,9 +9,10 @@ describe('global noindex release switch', () => {
     expect(read('public', '_headers')).toMatch(/^\/\*\n(?:\s+.+\n)*?\s+X-Robots-Tag: noindex, nofollow$/m);
   });
 
-  it('lifts it only for the exact opt-in SITE_INDEXING=allow, never via a committed config', () => {
+  it('lifts it only through indexing-policy.mjs, never via a committed config', () => {
     const prerender = read('scripts', 'prerender.mjs');
-    expect(prerender).toContain("process.env.SITE_INDEXING === 'allow'");
+    expect(prerender).toContain("import { indexingDecision } from './indexing-policy.mjs';");
+    expect(prerender).not.toContain('process.env.SITE_INDEXING ===');
     expect(read('netlify.toml')).not.toMatch(/SITE_INDEXING/);
   });
 });
