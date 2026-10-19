@@ -42,3 +42,10 @@ Produktivdeployment, Merge nach `main`, Entfernen des Staging-Noindex, DNS-/Lova
 1. PR-Status und CI prüfen.
 2. Wenn O-1 erledigt ist: Produktionsdomain erneut per HTTP prüfen (`curl -sI https://mpudeincoach-wissen.de/`).
 3. Nach dem Merge: Staging-Nachprüfung laut `MPU_WISSEN_RELEASE_STATUS.md` („Nicht geprüft“).
+
+## 19.10.2026 – Nachtrag nach Owner-Review
+
+| Schritt | Ergebnis |
+| --- | --- |
+| PR #1 auf der Netlify Deploy Preview geprüft | Ellwangen 404, robots.txt ohne Disallow, `/?q=Nachweis` ohne #418, 301/410/404 und noindex korrekt. Neu gesehen: `/404` und `/404.html` antworten auf Netlify mit 200 (noindex, Plattformverhalten, schon vor dem PR so) |
+| O-5 und O-7 vom Inhaber freigegeben | Tests zuerst (2 rot) → Startseite und Ratgeber: „dokumentierte“ statt „namentliche“ Fachprüfung; Slug `/mpu-ablauf/` → `/mpu-verfahren/` (id, Canonical, Navigation, Startseite, Pillar, Glossar, Related Links, Inventar) → 38/38 grün |

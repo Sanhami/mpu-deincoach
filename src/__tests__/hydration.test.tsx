@@ -35,7 +35,7 @@ describe('client hydration of prerendered HTML', () => {
     expect(document.querySelector('.glossary .selected dt')?.textContent).toBe('CTU');
   });
 
-  for (const url of ['/', '/wissen/', '/faq/', '/glossar/', '/mpu-ablauf/', '/mpu-begutachtungsstelle/', '/abstinenznachweis/', '/warenkorb/', '/gibtsnicht/', '/mpu-vorbereitung-ellwangen/', '/?q=Nachweis', '/glossar/?begriff=CTU', '/mpu-ablauf/?utm_source=newsletter']) {
+  for (const url of ['/', '/wissen/', '/faq/', '/glossar/', '/mpu-verfahren/', '/mpu-begutachtungsstelle/', '/abstinenznachweis/', '/warenkorb/', '/gibtsnicht/', '/mpu-vorbereitung-ellwangen/', '/?q=Nachweis', '/glossar/?begriff=CTU', '/mpu-verfahren/?utm_source=newsletter']) {
     it(`hydrates ${url} without mismatch`, async () => {
       expect(await hydrationErrors(url)).toEqual([]);
     });

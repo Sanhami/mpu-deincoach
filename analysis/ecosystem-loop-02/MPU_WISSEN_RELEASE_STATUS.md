@@ -20,13 +20,15 @@ Stand: 19.10.2026 · Release Candidate: Branch `claude/wissen-rc-2026-10` (Basis
 | --- | --- |
 | `npm ci` | ok |
 | `npm run qa`: Typecheck, Lint (0 Warnungen), Tests, Client-/SSR-Build, Prerender, Crawl | **grün** |
-| Tests | **36/36** (vorher 22): Content-Modell, Legacy-Routing, Prerender, Release-Guards, Hydration |
+| Tests | **38/38** (vorher 22): Content-Modell, Legacy-Routing, Prerender, Release-Guards, Hydration |
 | Static Crawl | 29 HTML · 11 indexierbar · 11 Sitemap-URLs · 18× 301 · 10× 410 · 0 Fehler; neu: Guards für MANUAL_REVIEW, `/404/`, robots.txt, JSON-LD |
 | `npm run links:external` | 16/16 externe Ziele direkt `200` |
-| Browser (lokaler Build) | 375/768/1024/1440 px: kein horizontaler Überlauf, je 1 H1, Konsole ohne Fehler auf `/`, `/mpu-ablauf/`, `/?q=Nachweis`, `/glossar/?begriff=CTU` |
+| Browser (lokaler Build) | 375/768/1024/1440 px: kein horizontaler Überlauf, je 1 H1, Konsole ohne Fehler auf `/`, `/mpu-ablauf/` (heute `/mpu-verfahren/`), `/?q=Nachweis`, `/glossar/?begriff=CTU` |
 | Datenflüsse | keine (keine Formulare mit Serverziel, Cookies, Storage, Tracker oder Fremd-Requests) |
 
-**Nicht geprüft** (erfordert Merge/Deploy): Verhalten des RC auf dem echten Netlify-Host. Auf dem aktuellen Staging-Stand (`main`) gilt: 200/301/404/410 wie erwartet, Header korrekt, Ellwangen noch 200, Hydration-Fehler auf `/?q=` vorhanden. Nach dem Merge sind dort zu prüfen: Ellwangen → 404, `/404/` → 404, `robots.txt` ohne Disallow, Konsole auf `/?q=` sauber.
+**Auf dem echten Netlify-Host geprüft** (Deploy Preview von PR #1, `deploy-preview-1--mpu-deincoach-staging.netlify.app`, 19.10.2026): Ellwangen → 404, `/warenkorb/` → 410, `/kontakt/` → 301 auf die Hauptseite, `/wissen` → 301 auf `/wissen/`, unbekannte URL → 404, `robots.txt` ohne Disallow, `X-Robots-Tag: noindex` aktiv, `/?q=Nachweis` mit 7 Ergebnissen und ohne Konsolenfehler.
+**Restbefund (Plattform, schon vor dem PR so):** `/404/` → 301 → `/404`, und `/404` bzw. `/404.html` antworten mit **200** (Netlify liefert die Datei `404.html` direkt aus). Die Seite ist `noindex`, daher kein Indexierungsrisiko. Optional ließe sich das mit einer erzwungenen `_redirects`-Regel beheben.
+Nach dem Merge auf dem Staging-Host einmal stichprobenartig wiederholen.
 
 ## Review-Gates (unverändert, durch Tests abgesichert)
 
@@ -40,7 +42,7 @@ Stand: 19.10.2026 · Release Candidate: Branch `claude/wissen-rc-2026-10` (Basis
 | Inhalt | Technisch | Fachlich | Rechtlich | Veröffentlichbar |
 | --- | --- | --- | --- | --- |
 | Start, Wissen, Ratgeber, Glossar, FAQ (6), Über uns, Redaktion, Richtlinien, Korrekturen | ✓ | ✓ (redaktionell) | Impressum/Datenschutz fehlen | nach O-2, O-3 |
-| `/mpu-ablauf/` | ✓ | ✓ (Handoff) | – | nach O-2, O-3; Slug O-7 |
+| `/mpu-verfahren/` (bis 19.10. `/mpu-ablauf/`) | ✓ | ✓ (Handoff) | – | nach O-2, O-3 |
 | `/mpu-begutachtungsstelle/` | ✓ | ✓ (Handoff) | – | nach O-2, O-3, **O-4** |
 | `/mpu-kosten/`, `/alkohol-mpu/`, `/drogen-mpu/`, `/abstinenznachweis/` | ✓ | ✗ | teils ✗ | nein (bleiben erreichbar, aber noindex) |
 

@@ -73,4 +73,21 @@ describe('release candidate guards', () => {
     const { CTA_LINKS } = await import('../config/site');
     expect(CTA_LINKS.ALKOHOL).toBe('https://mpudeincoach.de/mpu-wegen-alkohol');
   });
+
+  it('serves the procedure article at /mpu-verfahren/ and no longer links /mpu-ablauf/ (slug clash with mpudeincoach.de/mpu-ablauf)', () => {
+    const article = ARTICLES.find((item) => item.id === 'mpu-verfahren');
+    expect(article?.slug).toBe('/mpu-verfahren/');
+    expect(article?.canonical).toBe('https://mpudeincoach-wissen.de/mpu-verfahren/');
+    expect(staticPaths).not.toContain('/mpu-ablauf/');
+    expect(render('/mpu-ablauf/').html).toContain('404');
+    for (const path of staticPaths) expect(render(path).html).not.toContain('href="/mpu-ablauf/"');
+  });
+
+  it('does not promise a named expert review that the approved articles do not show', () => {
+    for (const path of ['/', '/ratgeber/']) {
+      const html = render(path).html;
+      expect(html).not.toMatch(/namentliche[rn]? Fach(prüfung|freigabe)/);
+      expect(html).toMatch(/dokumentierte[rn]? Fach(prüfung|freigabe)/);
+    }
+  });
 });

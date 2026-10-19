@@ -3,7 +3,7 @@ import { Link, NavLink } from 'react-router-dom';
 
 const links = [
   ['/wissen/', 'MPU Wissen'],
-  ['/mpu-ablauf/', 'Ablauf'],
+  ['/mpu-verfahren/', 'Ablauf'],
   ['/mpu-kosten/', 'Kosten'],
   ['/alkohol-mpu/', 'Alkohol'],
   ['/drogen-mpu/', 'Drogen'],

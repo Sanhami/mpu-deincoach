@@ -37,7 +37,7 @@ describe('editorial content model', () => {
     const states: PublicationState[] = ['DRAFT', 'FACHREVIEW_REQUIRED', 'LEGAL_REVIEW_REQUIRED', 'APPROVED_NOINDEX', 'APPROVED_PUBLIC', 'ARCHIVED'];
     expect(states).toHaveLength(6);
     expect(ARTICLES.every((article) => states.includes(article.publicationState))).toBe(true);
-    expect(ARTICLES.filter(isArticlePublic).map((article) => article.slug).sort()).toEqual(['/mpu-ablauf/', '/mpu-begutachtungsstelle/']);
+    expect(ARTICLES.filter(isArticlePublic).map((article) => article.slug).sort()).toEqual(['/mpu-begutachtungsstelle/', '/mpu-verfahren/']);
   });
 
   it('publishes only the six expert-approved FAQ items and scopes FAQ schema', () => {

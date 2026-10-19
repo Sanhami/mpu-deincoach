@@ -44,7 +44,7 @@ Behebung erfordert Zugriff auf Lovable/DNS → **Inhaberentscheidung** (`MPU_OWN
 | Artikel gesamt / indexierbar | 6 / 0 | 6 / 2 | 6 / 2 |
 | FAQ gesamt / öffentlich | 14 / 0 | 14 / 6 | 14 / 6 |
 
-Indexierbar (11): `/`, `/wissen/`, `/ratgeber/`, `/faq/`, `/glossar/`, `/ueber-uns/`, `/redaktion/`, `/redaktionsrichtlinien/`, `/korrekturen/`, `/mpu-ablauf/`, `/mpu-begutachtungsstelle/`.
+Indexierbar (11): `/`, `/wissen/`, `/ratgeber/`, `/faq/`, `/glossar/`, `/ueber-uns/`, `/redaktion/`, `/redaktionsrichtlinien/`, `/korrekturen/`, `/mpu-verfahren/` (bis 19.10. `/mpu-ablauf/`), `/mpu-begutachtungsstelle/`.
 
 Ausdrücklich gesperrt (noindex, nicht in Sitemap, kein Article-/FAQ-Schema):
 - Fachreview ausstehend: `/mpu-kosten/`, `/alkohol-mpu/`, `/drogen-mpu/`, `/abstinenznachweis/`
@@ -59,7 +59,7 @@ Ausdrücklich gesperrt (noindex, nicht in Sitemap, kein Article-/FAQ-Schema):
 | `/mpu-ablauf/`, `/mpu-begutachtungsstelle/` | `staging-validation/12-remaining-release-blockers.md`: review_required | `articles.ts`: `APPROVED_PUBLIC` | Staging-Bericht ist älter. Code maßgeblich. |
 | FAQ-Indexierung | `staging-validation`: `/faq/` erst nach Reviewer-Freigabe indexieren | Code: `/faq/` indexierbar mit 6 Einträgen | Folgt dem Experten-Handoff (`14-expert-claim-matrix-reconciliation.md`). Die Klärung der Fragen-Zuständigkeit mit der Hauptseite (`06-intent-overlap-resolution.md`, `MAIN_SITE_FOLLOWUP`) ist weiter offen. |
 | Wissensdomain | `human-approval/11-brand-architecture-decision.md`, `release-readiness/03-lovable-handoff.md`: `mpu-deincoach.de` | README, `netlify.toml`, `site.ts`, Auftrag: `mpudeincoach-wissen.de` | Code und Auftrag nennen `mpudeincoach-wissen.de`. Die Altdomain ist gesperrt (423). Die Rolle der Altdomain muss der Inhaber entscheiden. |
-| Namentliche Fachprüfung | Startseite: „Risikoinhalte werden erst nach **namentlicher** Fachprüfung … freigegeben“ | Beide freigegebenen Artikel: `reviewer: null`; `HUMAN-APPROVAL-MASTER`: „Public reviewer identities supplied: no“ | Öffentliche Aussage und Datenstand passen nicht zusammen → Inhaberentscheidung (Reviewer nennen oder Aussage anpassen). |
+| Namentliche Fachprüfung | Startseite: „Risikoinhalte werden erst nach **namentlicher** Fachprüfung … freigegeben“ | Beide freigegebenen Artikel: `reviewer: null`; `HUMAN-APPROVAL-MASTER`: „Public reviewer identities supplied: no“ | **Erledigt 19.10.2026 (O-5):** Startseite und Ratgeber sprechen jetzt von „dokumentierter“ Fachprüfung bzw. Fachfreigabe. |
 | Lovable | README: „Lovable wird nicht … als Hosting-Schicht verwendet“ | Produktionsdomain läuft auf Lovable | siehe P0 |
 
 ## 5. Rechtstexte

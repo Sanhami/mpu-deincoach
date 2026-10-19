@@ -26,7 +26,8 @@ Beide Domains haben eine indexierbare Seite mit fast gleichem Titel (`mpudeincoa
 - **B:** Die Hauptseite bleibt primär, der Portal-Artikel wird `APPROVED_NOINDEX`.
 Am besten mit Search-Console-Daten der Hauptseite entscheiden (Impressionen und Klicks dieser URL).
 
-**O-5 · Öffentliche Aussage „namentliche Fachprüfung“**
+**O-5 · Öffentliche Aussage „namentliche Fachprüfung“ – ERLEDIGT 19.10.2026 (Variante B, PR #1)**
+Startseite und Ratgeber-Intro sagen jetzt „dokumentierte Fachprüfung/Fachfreigabe“. Die Redaktionsseite bleibt unverändert, ihr Satz „keine namentliche Fachfreigabe“ ist sachlich korrekt. Ursprünglicher Befund:
 Die Startseite sagt, Risikoinhalte würden erst nach *namentlicher* Fachprüfung freigegeben. Die beiden freigegebenen Artikel nennen aber keinen Reviewer (`reviewer: null`).
 - **A:** Den Reviewer mit dessen Einverständnis, Qualifikation und Prüfdatum nennen. Ich trage ihn ein.
 - **B:** Den Satz anpassen, z. B. „nach dokumentierter Fachprüfung“.
@@ -37,7 +38,7 @@ Ich habe weder einen Namen erfunden noch die Aussage eigenmächtig geändert.
 **O-6 · Fachreview der 4 gesperrten Artikel und 8 FAQ**
 Kosten, Alkohol, Drogen, Abstinenznachweis. Reviewer-Profile und Prüfpakete liegen in `analysis/human-approval/02-…` und `03-…`. Zusätzlich nötig: die **aktuelle Fassung der Begutachtungsleitlinien vom 12.12.2025** als Quelle (`05-current-source-gap.md`).
 
-**O-7 · Slug des Verfahrensartikels**
+**O-7 · Slug des Verfahrensartikels – ERLEDIGT 19.10.2026 (PR #1): jetzt `/mpu-verfahren/`, ohne Weiterleitung, da nie produktiv live.** Ursprünglicher Befund:
 `/mpu-ablauf/` kollidiert im Slug mit `mpudeincoach.de/mpu-ablauf`. Vorschlag: Umbenennen in `/mpu-verfahren/`, **bevor** die Seite live ist (dann ohne Weiterleitungskosten). Ja/Nein genügt.
 
 **O-8 · Ellwangen und die Altdomain `mpu-deincoach.de`**

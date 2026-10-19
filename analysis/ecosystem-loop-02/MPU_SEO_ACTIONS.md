@@ -38,7 +38,7 @@ Rankingeffekte wurden **nicht** gemessen; es liegen keine GSC-Daten vor.
 | O1 | Produktionsdomain vom Lovable-Projekt lösen oder dort sofort auf noindex/offline setzen | Inhaber (Lovable/IONOS-DNS) | **P0** |
 | O2 | Nach dem Domainwechsel zu Netlify: Live-Prüfung 200/301/404/410, Header, `www` → Apex als **301** | O1, Produktionsfreigabe | P1 |
 | O3 | Kannibalisierung Begutachtungsstelle (Portal ↔ Hauptseite) entscheiden | Inhaber, GSC-Daten | P1 |
-| O4 | Slug `/mpu-ablauf/` → `/mpu-verfahren/` vor dem Launch (kostenlos, solange nicht live) | Inhaber | P2 |
+| O4 | ~~Slug `/mpu-ablauf/` → `/mpu-verfahren/`~~ **erledigt** 19.10.2026 in PR #1. Keine Weiterleitung nötig: Die Seite war nur auf dem noindex-Staging; auf der Lovable-Domain lieferte `/mpu-ablauf` ohnehin 404. | – | – |
 | O5 | Altdomain `mpu-deincoach.de` (423 Locked): entweder als Alias auf Netlify mit 301 auf die neue Domain, dann wirken die 18/10 Legacy-Regeln, oder bewusst aufgeben | Inhaber (Hosting-Vertrag) | P2 |
 | O6 | Search Console für die neue Domain anlegen, Sitemap einreichen, Hauptseite verknüpfen | Inhaber (kostenlos) | P2 nach Launch |
 | O7 | Optionale `llms.txt` für das Portal, generiert nur aus freigegebenen Seiten (Google wertet sie nicht aus; manche KI-Crawler schon) | – | P4 |

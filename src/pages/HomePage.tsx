@@ -4,7 +4,7 @@ import { PillarCard } from '../components/Cards';
 import { Search, SearchResults } from '../components/Search';
 
 const situations = [
-  ['Ich möchte den Ablauf verstehen', '/mpu-ablauf/', 'Schritte, Rollen und Untersuchung einordnen'],
+  ['Ich möchte den Ablauf verstehen', '/mpu-verfahren/', 'Schritte, Rollen und Untersuchung einordnen'],
   ['Meine MPU hat mit Alkohol zu tun', '/alkohol-mpu/', 'Konsummuster, Veränderung und Nachweise'],
   ['Meine MPU hat mit Drogen zu tun', '/drogen-mpu/', 'Anlass, Aufarbeitung und CTU-Wissen'],
   ['Ich möchte Kosten verstehen', '/mpu-kosten/', 'Kostenblöcke und Einflussfaktoren einordnen'],
@@ -46,7 +46,7 @@ export function HomePage() {
           <ol>
             <li><span>01</span><div><h3>Intent vor Textmenge</h3><p>Jede Seite beantwortet eine klar umrissene Wissensfrage und nennt ihren Domain-Eigentümer.</p></div></li>
             <li><span>02</span><div><h3>Quellen vor Gewissheit</h3><p>Rechtliche, medizinische und verfahrensbezogene Aussagen werden belegt oder als prüfpflichtig markiert.</p></div></li>
-            <li><span>03</span><div><h3>Review vor Indexierung</h3><p>Risikoinhalte werden erst nach namentlicher Fachprüfung für Suchmaschinen freigegeben.</p></div></li>
+            <li><span>03</span><div><h3>Review vor Indexierung</h3><p>Risikoinhalte werden erst nach dokumentierter Fachprüfung für Suchmaschinen freigegeben.</p></div></li>
             <li><span>04</span><div><h3>Korrekturen bleiben sichtbar</h3><p>Materiale Änderungen erhalten einen nachvollziehbaren Korrekturhinweis.</p></div></li>
           </ol>
           <div className="policy-links"><Link to="/redaktionsrichtlinien/">Redaktionsrichtlinien lesen →</Link><Link to="/korrekturen/">Korrektur melden →</Link></div>

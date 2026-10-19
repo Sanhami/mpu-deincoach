@@ -22,11 +22,11 @@ Am Wissensportal: 10 Korrekturen in 3 Commits (`9f6e05a`, `ca239f0`, `493fb5f`),
 6. fehlerhaftes BreadcrumbList-Schema (404-Seiten, falsche Tiefe) → korrigiert
 7. fehlende Markenverknüpfung im Schema → `parentOrganization`
 
-„Nachweislich“ heißt hier: im Build und in Tests. Auf dem Netlify-Host sind die Fixes erst nach dem Merge sichtbar.
+„Nachweislich“ heißt hier: im Build, in Tests und auf der Netlify Deploy Preview von PR #1 (echter Host, noindex). Auf dem Staging-Hauptstand erscheinen die Fixes nach dem Merge.
 
 ## Welche Inhalte sind fachlich freigegeben?
 
-- Artikel `/mpu-ablauf/` und `/mpu-begutachtungsstelle/` (Experten-Handoff, ohne öffentlich genannten Reviewer, siehe O-5)
+- Artikel `/mpu-verfahren/` (bis 19.10. `/mpu-ablauf/`) und `/mpu-begutachtungsstelle/` (Experten-Handoff, ohne öffentlich genannten Reviewer; die öffentliche Aussage spricht seit O-5 von „dokumentierter“ Fachprüfung)
 - 6 von 14 FAQ
 - Redaktions- und Vertrauensseiten (redaktionell)
 
@@ -40,7 +40,7 @@ Am Wissensportal: 10 Korrekturen in 3 Commits (`9f6e05a`, `ca239f0`, `493fb5f`),
 
 ## Was kann veröffentlicht werden?
 
-**Derzeit nichts.** Technisch ist der RC bereit. Für den Launch fehlen die Rechtstexte (O-2), die Klärung der Produktionsdomain (O-1) und deine Produktionsfreigabe (O-3). Danach könnten 11 Seiten indexierbar online gehen. Vorher sollten O-4 (Begutachtungsstelle) und O-7 (Slug) entschieden sein.
+**Derzeit nichts.** Technisch ist der RC bereit. Für den Launch fehlen die Rechtstexte (O-2), die Klärung der Produktionsdomain (O-1) und deine Produktionsfreigabe (O-3). Danach könnten 11 Seiten indexierbar online gehen. Vorher sollte O-4 (Begutachtungsstelle) entschieden sein. O-5 und O-7 sind erledigt.
 
 ## Was fehlt noch?
 
