@@ -6,9 +6,14 @@ Stand: 19.10.2026. Sortiert nach Dringlichkeit. Alles, was ohne dich technisch m
 
 **O-1 · Produktionsdomain `mpudeincoach-wissen.de` absichern**
 Befund: Die Domain zeigt auf ein Lovable-Projekt (IP `185.158.133.1`) mit einem alten Build. Die Startseite ist `index,follow`, `/impressum` und alle Unterseiten liefern 404, die Sitemap listet nur 404-URLs.
-Entscheidung, eine Option wählen:
-- **A (empfohlen, sofort, kostenlos):** Im Lovable-Projekt die Custom Domain entfernen bzw. „Unpublish“. Die Domain liefert dann nichts mehr aus, bis Netlify übernimmt.
-- **B:** Die Domain jetzt schon auf Netlify zeigen lassen (IONOS-DNS), mit dem bestehenden globalen noindex. Setzt voraus, dass das Netlify-Projekt die Domain bekommt. Das Noindex bleibt aktiv, bis du O-3 freigibst.
+DNS bei IONOS: A `@` und A `www` → `185.158.133.1` (gemeinsame Lovable-IP), TXT `_lovable`/`_lovable.www`. Mail-Einträge und `google-site-verification` müssen bleiben.
+**Schritt-für-Schritt-Anleitung: `NETLIFY_PRODUKTION_UND_O1.md` § 2.** Kurz, Variante A (empfohlen, kostenlos, kein Unpublish nötig):
+1. bei IONOS die beiden A-Records löschen,
+2. in Lovable beide Domains trennen (*Disconnect*),
+3. bei IONOS die `_lovable`-TXT löschen,
+4. per HTTP/DNS prüfen, in der Search Console ggf. die Startseite vorübergehend entfernen.
+Diese Reihenfolge verhindert, dass die Domain auf eine gemeinsame Lovable-IP zeigt, ohne dort verbunden zu sein (Risiko einer Übernahme).
+Variante B (sofort an Netlify mit noindex) ist beschrieben, aber nicht empfohlen, solange kein Impressum freigegeben ist.
 
 Ich habe weder Lovable noch DNS angefasst (keine Berechtigung, Domain/DNS ist Inhabersache).
 
@@ -18,7 +23,7 @@ Ich habe weder Lovable noch DNS angefasst (keine Berechtigung, Domain/DNS ist In
 Impressum und Datenschutz liegen als Entwurf vor (`analysis/human-approval/10-draft-impressum.md`, `12-draft-datenschutz.md`). Erforderlich: juristische Freigabe, AGB-Anwendbarkeit protokollieren (technisch nicht nötig: kein Verkauf, keine Konten auf dieser Domain), Netlify-AVV prüfen.
 
 **O-3 · Produktions-Release freigeben**
-Erst nach O-1 und O-2: PR `claude/wissen-rc-2026-10` mergen, Produktionsdomain an Netlify, globalen `X-Robots-Tag: noindex, nofollow` aus `public/_headers` **nur für die Produktion** entfernen. Ich habe nichts davon ausgeführt.
+Erst nach O-1, O-2 und O-14: Produktionsdomain an Netlify, dann in Netlify `SITE_INDEXING=allow` **nur im Kontext „Production“** setzen. Ohne diese Variable bleibt die globale Sperre in jedem Build aktiv. Einstellungen und Abnahme-Checkliste: `NETLIFY_PRODUKTION_UND_O1.md` § 4. Ich habe nichts davon ausgeführt.
 
 **O-4 · Wem gehört „MPU-Begutachtungsstelle wählen“?**
 Beide Domains haben eine indexierbare Seite mit fast gleichem Titel (`mpudeincoach.de/mpu-begutachtungsstelle` und `…-wissen.de/mpu-begutachtungsstelle/`).
@@ -26,14 +31,20 @@ Beide Domains haben eine indexierbare Seite mit fast gleichem Titel (`mpudeincoa
 - **B:** Die Hauptseite bleibt primär, der Portal-Artikel wird `APPROVED_NOINDEX`.
 Am besten mit Search-Console-Daten der Hauptseite entscheiden (Impressionen und Klicks dieser URL).
 
-**O-5 · Öffentliche Aussage „namentliche Fachprüfung“ – ERLEDIGT 19.10.2026 (Variante B, PR #1)**
-Startseite und Ratgeber-Intro sagen jetzt „dokumentierte Fachprüfung/Fachfreigabe“. Die Redaktionsseite bleibt unverändert, ihr Satz „keine namentliche Fachfreigabe“ ist sachlich korrekt. Ursprünglicher Befund:
+**O-5 · Öffentliche Aussage „namentliche Fachprüfung“ – ERLEDIGT (PR #1), am 19.10. nachgeschärft**
+Belegprüfung: Auch „dokumentierte Fachprüfung“ war nicht gedeckt. Dokumentiert ist nur eine Experten-Entscheidung auf Artikelebene (03.09.2026), ohne ausgefülltes Prüferformular und ohne Nachweis einer rechtlichen Prüfung. Jetzt steht dort: „Risikoinhalte bleiben für Suchmaschinen gesperrt, bis eine fachliche Prüfung vorliegt. Den Prüfstatus zeigt jeder Artikel.“ Die Prüfkarte nennt „Fachliche Prüfung … auf Artikelebene abgeschlossen (Experten-Handoff vom 3. September 2026)“ statt „fachliche **und rechtliche** Prüfung“. Ursprünglicher Befund:
 Die Startseite sagt, Risikoinhalte würden erst nach *namentlicher* Fachprüfung freigegeben. Die beiden freigegebenen Artikel nennen aber keinen Reviewer (`reviewer: null`).
 - **A:** Den Reviewer mit dessen Einverständnis, Qualifikation und Prüfdatum nennen. Ich trage ihn ein.
 - **B:** Den Satz anpassen, z. B. „nach dokumentierter Fachprüfung“.
 Ich habe weder einen Namen erfunden noch die Aussage eigenmächtig geändert.
 
 ## Fachlich (P1/P2)
+
+**O-14 · Prüfnachweis für die 2 indexierbaren Artikel (vor dem Launch)**
+`/mpu-verfahren/` und `/mpu-begutachtungsstelle/` sind `APPROVED_PUBLIC` aufgrund des Experten-Handoffs. Nach den Regeln des Repos (`04-review-approval-template.md`, `10-publication-gate-model.md`) fehlen: Prüferformular (Name, Qualifikation, Commit, Datum, Nachweisort; der Name muss **nicht** veröffentlicht werden) und die rechtliche Prüfung (`LEGAL_REVIEW` ist Anforderung beider Artikel).
+- **A:** Nachweise ergänzen (intern ablegen), dann bleibt alles wie es ist.
+- **B:** Bis dahin beide Artikel auf `APPROVED_NOINDEX` setzen. Ein Satz von dir genügt, ich setze es um.
+Für den Merge nach Staging ist das unkritisch (Staging bleibt noindex), für den Launch ist es eine Voraussetzung.
 
 **O-6 · Fachreview der 4 gesperrten Artikel und 8 FAQ**
 Kosten, Alkohol, Drogen, Abstinenznachweis. Reviewer-Profile und Prüfpakete liegen in `analysis/human-approval/02-…` und `03-…`. Zusätzlich nötig: die **aktuelle Fassung der Begutachtungsleitlinien vom 12.12.2025** als Quelle (`05-current-source-gap.md`).
@@ -48,7 +59,7 @@ Die Altdomain antwortet überall mit `423 Locked`. Entscheide: (a) den Hosting-V
 
 **O-9 · Notion-Zugriff** – Der Notion-Connector ist nicht autorisiert. Ohne Zugriff kann ich den Status der 24 „Skript“-Einträge nicht prüfen. Freischalten über die claude.ai-Connector-Einstellungen.
 
-**O-10 · Google Search Console** – Für die Domain-Entscheidungen (O-4, O-8) und die Erfolgsmessung: GSC-Zugang (kostenlos) oder ein Export der Leistungsdaten von `mpudeincoach.de`.
+**O-10 · Google Search Console** – Für die Domain-Entscheidungen (O-4, O-8) und die Erfolgsmessung: GSC-Zugang (kostenlos) oder ein Export der Leistungsdaten von `mpudeincoach.de`. Für `mpudeincoach-wissen.de` existiert laut DNS-TXT bereits eine bestätigte Property. Sie ist nutzbar für O-1 (Entfernen) und den Launch (Sitemap).
 
 **O-11 · CRM: Offsite-Restore-Test** – Der Backup-Status meldet „noch kein Offsite-Restore-Test im Log“. Den Offsite-Restore-Test laut CRM-Runbook (`deploy/production/README.md`, Schritt 9) einmal ausführen; er ändert keine Produktivdaten. Ich habe ihn nicht gestartet.
 

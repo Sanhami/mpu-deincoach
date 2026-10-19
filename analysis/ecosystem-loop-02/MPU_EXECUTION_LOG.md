@@ -49,3 +49,16 @@ Produktivdeployment, Merge nach `main`, Entfernen des Staging-Noindex, DNS-/Lova
 | --- | --- |
 | PR #1 auf der Netlify Deploy Preview geprüft | Ellwangen 404, robots.txt ohne Disallow, `/?q=Nachweis` ohne #418, 301/410/404 und noindex korrekt. Neu gesehen: `/404` und `/404.html` antworten auf Netlify mit 200 (noindex, Plattformverhalten, schon vor dem PR so) |
 | O-5 und O-7 vom Inhaber freigegeben | Tests zuerst (2 rot) → Startseite und Ratgeber: „dokumentierte“ statt „namentliche“ Fachprüfung; Slug `/mpu-ablauf/` → `/mpu-verfahren/` (id, Canonical, Navigation, Startseite, Pillar, Glossar, Related Links, Inventar) → 38/38 grün |
+
+## 19.10.2026 – Merge-Vorbereitung (Auftrag „Fahre mit dem Wissensportal fort“)
+
+| Schritt | Ergebnis |
+| --- | --- |
+| 404/Canonical reproduziert (Preview + Build) | unbekannte URLs 404 ✓; aber Canonical und `og:url` → `/not-found/` auf jeder Fehlerseite, 410-Seiten mit Self-Canonical auf entfernte URL |
+| TDD: 4 Tests rot → `SeoData.canonical` optional, keine Ausgabe auf 404/410, `Seo.tsx` entfernt die Tags nach der Hydration; Crawl-Guard (Mutationsprobe) | Commit `da6e653`, 42/42 |
+| Belegprüfung „dokumentierte Fachprüfung“ | nicht gedeckt (kein ausgefülltes Prüferformular, keine rechtliche Prüfung belegt) → Wortlaut auf den Beleg reduziert; Publikationsstatus unverändert; O-14 neu |
+| `npm ci` + `npm run qa` | grün |
+| Zweite Deploy Preview | Status, Canonicals, robots.txt, Sitemap, Navigation, noindex, Hydration im Browser ✓ |
+| DNS-Analyse O-1 (DoH, autoritative TTL 3600 s), Lovable- und Netlify-Doku | Runbook `NETLIFY_PRODUKTION_UND_O1.md` |
+| Indexierungsschalter `SITE_INDEXING=allow` (Standard: gesperrt) mit Tests und Crawl-Guard | 44/44, siehe Release-Status |
+| Rechtstext-Entwürfe nennen noch `mpu-deincoach.de` | als R1 dokumentiert |

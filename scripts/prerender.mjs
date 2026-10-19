@@ -39,4 +39,13 @@ await writeFile(
   'utf8',
 );
 
+// Global noindex (public/_headers) stays on unless the production build explicitly opts in.
+// Set SITE_INDEXING=allow only in the Netlify production context, and only after release approval.
+if (process.env.SITE_INDEXING === 'allow') {
+  const headersPath = join(dist, '_headers');
+  const headers = await readFile(headersPath, 'utf8');
+  await writeFile(headersPath, headers.replace(/^[ \t]*X-Robots-Tag:[^\n]*\r?\n/m, ''), 'utf8');
+  console.log('SITE_INDEXING=allow: global X-Robots-Tag removed from dist/_headers');
+}
+
 await rm(join(root, 'dist-server'), { recursive: true, force: true });

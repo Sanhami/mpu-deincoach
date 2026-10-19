@@ -20,14 +20,15 @@ Stand: 19.10.2026 · Release Candidate: Branch `claude/wissen-rc-2026-10` (Basis
 | --- | --- |
 | `npm ci` | ok |
 | `npm run qa`: Typecheck, Lint (0 Warnungen), Tests, Client-/SSR-Build, Prerender, Crawl | **grün** |
-| Tests | **38/38** (vorher 22): Content-Modell, Legacy-Routing, Prerender, Release-Guards, Hydration |
+| Tests | **44/44** (vorher 22): Content-Modell, Legacy-Routing, Prerender, Release-Guards, Hydration |
 | Static Crawl | 29 HTML · 11 indexierbar · 11 Sitemap-URLs · 18× 301 · 10× 410 · 0 Fehler; neu: Guards für MANUAL_REVIEW, `/404/`, robots.txt, JSON-LD |
 | `npm run links:external` | 16/16 externe Ziele direkt `200` |
 | Browser (lokaler Build) | 375/768/1024/1440 px: kein horizontaler Überlauf, je 1 H1, Konsole ohne Fehler auf `/`, `/mpu-ablauf/` (heute `/mpu-verfahren/`), `/?q=Nachweis`, `/glossar/?begriff=CTU` |
 | Datenflüsse | keine (keine Formulare mit Serverziel, Cookies, Storage, Tracker oder Fremd-Requests) |
 
 **Auf dem echten Netlify-Host geprüft** (Deploy Preview von PR #1, `deploy-preview-1--mpu-deincoach-staging.netlify.app`, 19.10.2026): Ellwangen → 404, `/warenkorb/` → 410, `/kontakt/` → 301 auf die Hauptseite, `/wissen` → 301 auf `/wissen/`, unbekannte URL → 404, `robots.txt` ohne Disallow, `X-Robots-Tag: noindex` aktiv, `/?q=Nachweis` mit 7 Ergebnissen und ohne Konsolenfehler.
-**Restbefund (Plattform, schon vor dem PR so):** `/404/` → 301 → `/404`, und `/404` bzw. `/404.html` antworten mit **200** (Netlify liefert die Datei `404.html` direkt aus). Die Seite ist `noindex`, daher kein Indexierungsrisiko. Optional ließe sich das mit einer erzwungenen `_redirects`-Regel beheben.
+**404-Behandlung (zweite Preview, Commit `da6e653`):** Unbekannte URLs (`/gibtsnicht`, `/gibtsnicht/`, `/a/b/c.html`, `/mpu-ablauf/`, Ellwangen) liefern **HTTP 404**, ohne Canonical und ohne `og:url`, auch nach der Hydration (im Browser geprüft). 410-Seiten ebenfalls ohne Canonical. `/404` und `/404.html` antworten mit 200, weil Netlify die Datei `404.html` unter ihrem eigenen Namen ausliefert; `/404/` leitet per Netlify-Standard einmal auf `/404`. Diese drei sind keine unbekannten URLs, sondern der Dateiname der Fehlerseite. Sie sind `noindex`, ohne Canonical und nirgends verlinkt. **Bewusst keine zusätzliche Regel** (Vorgabe: keine unnötigen Regeln oder Ketten).
+Ebenfalls auf der Preview geprüft: Self-Canonicals auf allen 11 Sitemap-Seiten, Sitemap (11 URLs inkl. `/mpu-verfahren/`), `robots.txt` ohne Disallow, Navigation (8 Links, `/mpu-verfahren/` statt `/mpu-ablauf/`), `X-Robots-Tag: noindex` auf jeder Antwort.
 Nach dem Merge auf dem Staging-Host einmal stichprobenartig wiederholen.
 
 ## Review-Gates (unverändert, durch Tests abgesichert)
@@ -46,6 +47,10 @@ Nach dem Merge auf dem Staging-Host einmal stichprobenartig wiederholen.
 | `/mpu-begutachtungsstelle/` | ✓ | ✓ (Handoff) | – | nach O-2, O-3, **O-4** |
 | `/mpu-kosten/`, `/alkohol-mpu/`, `/drogen-mpu/`, `/abstinenznachweis/` | ✓ | ✗ | teils ✗ | nein (bleiben erreichbar, aber noindex) |
 
+## Indexierungsschalter (neu)
+
+`public/_headers` behält `X-Robots-Tag: noindex, nofollow`. `scripts/prerender.mjs` entfernt die Zeile **nur** bei der Build-Variable `SITE_INDEXING=allow`. `npm run crawl` prüft beide Richtungen und schlägt fehl, wenn ein Standard-Build ohne Sperre entsteht (Mutationsprobe erfolgreich). `netlify.toml` darf die Variable nicht setzen (Test). Geprüft: Standard → Sperre, `allow` → keine Sperre, `Allow` → Sperre.
+
 ## Restliche Freigaben
 
-Siehe `MPU_OWNER_ACTIONS.md` (O-1 bis O-8).
+Siehe `MPU_OWNER_ACTIONS.md` (O-1 bis O-14) und `NETLIFY_PRODUKTION_UND_O1.md`.
