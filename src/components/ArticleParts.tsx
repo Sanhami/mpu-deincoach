@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom';
 import { CTA_LINKS, type CtaKey } from '../config/site';
 import type { Article, ArticleBlock, FAQItem, PersonRef, SourceRef } from '../content/model';
-import { isArticlePublic, isArticleReviewPending } from '../content/model';
+import { isArticleApprovedNoindex, isArticlePublic, isArticleReviewPending } from '../content/model';
 import { articleBySlug } from '../content/articles';
 import { Breadcrumbs } from './Breadcrumbs';
 import { CalloutBox, ImportantBox, KnowledgeCard, ReflectionBox, ReviewBadge } from './Cards';
@@ -21,7 +21,7 @@ export function ArticleMeta({ article }: { article: Article }) {
     <dl className="article-meta">
       <div><dt>Autor</dt><dd>{article.author.name}</dd></div>
       <div><dt>Stand</dt><dd><time dateTime={article.updatedAt}>{new Intl.DateTimeFormat('de-DE', { dateStyle: 'long' }).format(new Date(article.updatedAt))}</time></dd></div>
-      <div><dt>Fachprüfung</dt><dd>{article.reviewer ? article.reviewer.name : isArticlePublic(article) ? 'Abgeschlossen' : 'Ausstehend'}</dd></div>
+      <div><dt>Fachprüfung</dt><dd>{article.reviewer ? article.reviewer.name : isArticlePublic(article) ? 'Abgeschlossen' : isArticleApprovedNoindex(article) ? 'Nachweis unvollständig' : 'Ausstehend'}</dd></div>
       {article.reviewer && article.nextReviewAt && <div><dt>Nächste Prüfung</dt><dd>{new Intl.DateTimeFormat('de-DE', { dateStyle: 'medium' }).format(new Date(article.nextReviewAt))}</dd></div>}
     </dl>
   );
@@ -55,7 +55,8 @@ export function AuthorCard({ person }: { person: PersonRef }) {
   return <section className="person-card"><span className="avatar" aria-hidden="true">R</span><div><span className="card-kicker">Redaktionell verantwortlich</span><h2>{person.name}</h2><p>{person.role}. Fachliche Freigaben und offene Reviewgrenzen werden artikelbezogen dokumentiert.</p><Link to="/redaktion/">So arbeitet die Redaktion →</Link></div></section>;
 }
 
-export function ReviewerCard({ reviewer, scope, approved = false }: { reviewer: PersonRef | null; scope?: string; approved?: boolean }) {
+export function ReviewerCard({ reviewer, scope, approved = false, noindex = false }: { reviewer: PersonRef | null; scope?: string; approved?: boolean; noindex?: boolean }) {
+  if (!reviewer && noindex) return <section className="reviewer-card"><h2>Nicht für Suchmaschinen freigegeben</h2><p>{scope}</p><p>Bis die vorgeschriebenen fachlichen und rechtlichen Prüfnachweise vollständig vorliegen, ist dieser Artikel von der Indexierung ausgeschlossen.</p></section>;
   if (!reviewer && approved) return <section className="reviewer-card"><h2>Fachprüfung abgeschlossen</h2><p>{scope}</p></section>;
   if (!reviewer) return <section className="reviewer-card"><ReviewBadge /><h2>Freigabe steht aus</h2><p>{scope}</p></section>;
   return <section className="reviewer-card"><h2>{reviewer.name}</h2><p>{reviewer.role}</p>{scope && <p>{scope}</p>}</section>;
@@ -93,7 +94,7 @@ export function ArticleLayout({ article }: { article: Article }) {
             <SourcesList sources={article.sources} />
             <ArticleUpdateInfo article={article} />
             <AuthorCard person={article.author} />
-            <ReviewerCard reviewer={article.reviewer} scope={article.reviewScope} approved={isArticlePublic(article)} />
+            <ReviewerCard reviewer={article.reviewer} scope={article.reviewScope} approved={isArticlePublic(article)} noindex={isArticleApprovedNoindex(article)} />
             <ArticleCTA target={article.ctaTarget} />
           </div>
         </div>

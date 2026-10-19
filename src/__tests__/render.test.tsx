@@ -12,15 +12,15 @@ describe('prerender output', () => {
     expect(result.head).toContain('SearchAction');
   });
 
-  it('renders the approved assessment-center URL with sources and scoped schema', () => {
+  it('renders the assessment-center article with sources, but noindex and without Article/FAQ schema (O-14)', () => {
     const result = render('/mpu-begutachtungsstelle/');
     expect(h1Count(result.html)).toBe(1);
     expect(result.html).toContain('MPU-Begutachtungsstelle wählen');
     expect(result.html).toContain('§ 11 Fahrerlaubnis-Verordnung');
-    expect(result.html).toContain('Fachprüfung abgeschlossen');
-    expect(result.head).toContain('index,follow,max-image-preview:large');
-    expect(result.head).toContain('"@type":"Article"');
-    expect(result.head).toContain('"@type":"FAQPage"');
+    expect(result.html).toContain('Nicht für Suchmaschinen freigegeben');
+    expect(result.head).toContain('content="noindex,follow"');
+    expect(result.head).not.toContain('"@type":"Article"');
+    expect(result.head).not.toContain('"@type":"FAQPage"');
   });
 
   it('renders 404 and gone pages distinctly', () => {
@@ -28,12 +28,11 @@ describe('prerender output', () => {
     expect(render('/warenkorb/').html).toContain('410');
   });
 
-  it('renders only approved questions on the public FAQ page', () => {
+  it('renders no unpublished question on the FAQ page and keeps it noindex while empty', () => {
     const result = render('/faq/');
-    expect(result.html).toContain('Wie lange dauert der gesamte MPU-Ablauf?');
-    expect(result.html).toContain('Kann eine Begutachtungsstelle gleichzeitig meine Vorbereitung verkaufen?');
+    expect(result.html).not.toContain('Wie lange dauert der gesamte MPU-Ablauf?');
     expect(result.html).not.toContain('Braucht jede Alkohol-MPU einen Abstinenznachweis?');
-    expect(result.head).toContain('"@type":"FAQPage"');
-    expect(result.head).toContain('index,follow,max-image-preview:large');
+    expect(result.head).not.toContain('"@type":"FAQPage"');
+    expect(result.head).toContain('content="noindex,follow"');
   });
 });

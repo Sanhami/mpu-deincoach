@@ -2,7 +2,7 @@ import { Link, useSearchParams } from 'react-router-dom';
 import { Breadcrumbs } from '../components/Breadcrumbs';
 import { KnowledgeCard, PillarCard } from '../components/Cards';
 import { ARTICLES } from '../content/articles';
-import { isFAQPublic } from '../content/model';
+import { publicFAQItems } from '../content/model';
 import { GLOSSARY, PILLARS } from '../content/pillars';
 import { useHydrated } from '../components/useHydrated';
 
@@ -24,7 +24,7 @@ export function GlossaryPage() {
 }
 
 export function FAQPage() {
-  const entries = ARTICLES.flatMap((article) => article.faq.filter(isFAQPublic).map((faq) => ({ ...faq, path: article.slug, pillar: article.pillar }))).filter((item, index, all) => all.findIndex((candidate) => candidate.question === item.question) === index);
-  const blockedCount = ARTICLES.flatMap((article) => article.faq).filter((faq) => !isFAQPublic(faq)).length;
-  return <main id="main-content"><div className="wrap narrow"><Breadcrumbs items={[{ label: 'FAQ' }]} /><header className="page-header"><span className="eyebrow">Allgemeine Wissensfragen</span><h1>Häufige Fragen zur MPU</h1><p>Diese Sammlung enthält ausschließlich fachlich freigegebene Fragen. Service-, Buchungs- und Angebotsfragen liegen nicht auf diesem Wissensportal.</p></header><section className="faq-list">{entries.map((entry) => <details key={entry.question}><summary><span>{entry.pillar}</span>{entry.question}</summary><p>{entry.answer}</p><Link to={entry.path}>Im ausführlichen Artikel weiterlesen →</Link></details>)}</section><p className="scope-note boxed">{`${entries.length} geprüfte Fragen sind veröffentlicht. ${blockedCount} weitere Fragen bleiben bis zur erforderlichen Fach- oder Quellenprüfung gesperrt und erscheinen weder hier noch im FAQ-Schema.`}</p></div></main>;
+  const entries = ARTICLES.flatMap((article) => publicFAQItems(article).map((faq) => ({ ...faq, path: article.slug, pillar: article.pillar }))).filter((item, index, all) => all.findIndex((candidate) => candidate.question === item.question) === index);
+  const blockedCount = ARTICLES.flatMap((article) => article.faq).length - entries.length;
+  return <main id="main-content"><div className="wrap narrow"><Breadcrumbs items={[{ label: 'FAQ' }]} /><header className="page-header"><span className="eyebrow">Allgemeine Wissensfragen</span><h1>Häufige Fragen zur MPU</h1><p>Diese Sammlung enthält ausschließlich fachlich freigegebene Fragen. Service-, Buchungs- und Angebotsfragen liegen nicht auf diesem Wissensportal.</p></header>{!entries.length && <p className="scope-note boxed">Derzeit ist keine Frage für die Veröffentlichung freigegeben.</p>}<section className="faq-list">{entries.map((entry) => <details key={entry.question}><summary><span>{entry.pillar}</span>{entry.question}</summary><p>{entry.answer}</p><Link to={entry.path}>Im ausführlichen Artikel weiterlesen →</Link></details>)}</section><p className="scope-note boxed">{`${entries.length} geprüfte Fragen sind veröffentlicht. ${blockedCount} weitere Fragen bleiben bis zur erforderlichen Fach- oder Quellenprüfung gesperrt und erscheinen weder hier noch im FAQ-Schema.`}</p></div></main>;
 }

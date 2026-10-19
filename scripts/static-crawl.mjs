@@ -121,7 +121,8 @@ for (const [route, html] of htmlByRoute) {
     catch { failures.push(`${route}: invalid JSON-LD`); }
   }
 }
-if (indexable.length !== 11) failures.push(`expected 11 indexable pages, found ${indexable.length}`);
+// 8 = hub and trust pages; articles and an empty /faq/ stay noindex (owner decision O-14, 19.10.2026)
+if (indexable.length !== 8) failures.push(`expected 8 indexable pages, found ${indexable.length}`);
 if (redirects.length !== 18) failures.push(`expected 18 redirects, found ${redirects.length}`);
 if (goneCount !== 10) failures.push(`expected 10 gone pages, found ${goneCount}`);
 if (goneManifest.length !== 10 || new Set(goneManifest).size !== 10) failures.push('gone manifest must contain 10 unique routes');

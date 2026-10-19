@@ -85,7 +85,10 @@ export const isArticleReviewPending = (article: Article) => ['FACHREVIEW_REQUIRE
 
 export const isFAQPublic = (item: FAQItem) => item.publicationState === 'PUBLIC_APPROVED';
 
-export const publicFAQItems = (article: Article) => article.faq.filter(isFAQPublic);
+/** An FAQ answer is only public when its own approval AND its article's publication allow it. */
+export const publicFAQItems = (article: Article) => (isArticlePublic(article) ? article.faq.filter(isFAQPublic) : []);
+
+export const isArticleApprovedNoindex = (article: Article) => article.publicationState === 'APPROVED_NOINDEX';
 
 export interface Pillar {
   id: string;

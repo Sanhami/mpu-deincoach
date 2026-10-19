@@ -3,7 +3,7 @@ import { join } from 'node:path';
 import { describe, expect, it } from 'vitest';
 import { render, staticPaths } from '../entry-server';
 import { ARTICLES } from '../content/articles';
-import { isArticlePublic } from '../content/model';
+import { isArticlePublic, publicFAQItems } from '../content/model';
 import { LEGACY_REDIRECTS } from '../config/redirects';
 import { schemaForPath } from '../seo';
 
@@ -63,7 +63,7 @@ describe('release candidate guards', () => {
 
   it('states the FAQ counts from the data instead of hard-coded numbers', () => {
     const faq = ARTICLES.flatMap((article) => article.faq);
-    const approved = faq.filter((item) => item.publicationState === 'PUBLIC_APPROVED').length;
+    const approved = ARTICLES.flatMap(publicFAQItems).length;
     const html = render('/faq/').html;
     expect(html).toContain(`${approved} geprüfte Fragen sind veröffentlicht`);
     expect(html).toContain(`${faq.length - approved} weitere Fragen bleiben`);

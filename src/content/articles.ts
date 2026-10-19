@@ -29,7 +29,8 @@ export const ARTICLES: Article[] = [
     sources: [SOURCES.fev11, SOURCES.fev4a, SOURCES.bk5Foundations],
     reviewRequirements: ['MPU_FACHREVIEW', 'LEGAL_REVIEW', 'EDITORIAL_REVIEW', 'SOURCE_VERIFICATION'],
     reviewScope: 'Fachliche Prüfung der korrigierten Fassung auf Artikelebene abgeschlossen (Experten-Handoff vom 3. September 2026); keine universellen Untersuchungsbestandteile, Dauern oder Erfolgsaussagen.',
-    publicationState: 'APPROVED_PUBLIC',
+    // O-14 (Inhaberentscheidung 19.10.2026): noindex, bis die vorgeschriebenen fachlichen und rechtlichen Prüfnachweise vollständig vorliegen.
+    publicationState: 'APPROVED_NOINDEX',
     schema: ['Article', 'BreadcrumbList', 'FAQPage'],
     body: [
       { type: 'paragraph', text: 'Das MPU-Verfahren verbindet mehrere Beteiligte mit unterschiedlichen Aufgaben. Diese Übersicht ordnet Behörde, betroffene Person, Begutachtungsstelle, Unterlagen und Gutachten ein. Sie ist kein persönlicher Vorbereitungs- oder Terminplan.' },
@@ -221,7 +222,8 @@ export const ARTICLES: Article[] = [
     sources: [SOURCES.fev11, SOURCES.fev66, SOURCES.fev4a, SOURCES.fev14, SOURCES.bk5Foundations],
     reviewRequirements: ['MPU_FACHREVIEW', 'LEGAL_REVIEW', 'EDITORIAL_REVIEW', 'SOURCE_VERIFICATION'],
     reviewScope: 'Fachliche Prüfung der korrigierten Fassung auf Artikelebene abgeschlossen (Experten-Handoff vom 3. September 2026); Auswahl, Aktenweg und Trennungsregeln bleiben ohne Erfolgs- oder Fristversprechen.',
-    publicationState: 'APPROVED_PUBLIC',
+    // O-14 (Inhaberentscheidung 19.10.2026): noindex, bis die vorgeschriebenen fachlichen und rechtlichen Prüfnachweise vollständig vorliegen.
+    publicationState: 'APPROVED_NOINDEX',
     schema: ['Article', 'BreadcrumbList', 'FAQPage'],
     body: [
       { type: 'paragraph', text: 'Eine Begutachtungsstelle für Fahreignung führt die medizinisch-psychologische Untersuchung durch und erstellt das Gutachten zur behördlichen Fragestellung. Für MPU-Gutachten kommen amtlich anerkannte Stellen in Betracht.' },

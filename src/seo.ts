@@ -6,6 +6,9 @@ import { LEGACY_REDIRECTS } from './config/redirects';
 const MAIN_SITE_ORGANIZATION_ID = 'https://mpudeincoach.de/#organization';
 import { articleIndexability, isArticlePublic, publicFAQItems } from './content/model';
 
+/** /faq/ is only indexable while at least one FAQ answer is actually public. */
+const HAS_PUBLIC_FAQ = ARTICLES.flatMap(publicFAQItems).length > 0;
+
 export interface SeoData {
   title: string;
   description: string;
@@ -20,7 +23,7 @@ const CUSTOM: Record<string, Omit<SeoData, 'canonical'>> = {
   '/wissen/': { title: 'MPU Wissen von A bis Z | MPU Wissen', description: 'Alle MPU-Wissensbereiche im Überblick: Grundlagen, Ablauf, Kosten, Alkohol, Drogen, Nachweise, Begutachtungsstellen und mehr.', indexability: 'index', type: 'website' },
   '/ratgeber/': { title: 'MPU-Ratgeber | MPU Wissen', description: 'Quellenorientierte MPU-Ratgeber mit dokumentiertem Status, Quellen und transparentem Fachreview.', indexability: 'index', type: 'website' },
   '/glossar/': { title: 'MPU-Glossar: wichtige Begriffe | MPU Wissen', description: 'Wichtige MPU-Begriffe kurz, verständlich und im richtigen Zusammenhang erklärt.', indexability: 'index', type: 'website' },
-  '/faq/': { title: 'Häufige Fragen zur MPU | MPU Wissen', description: 'Fachlich freigegebene Fragen zur MPU nach Themen sortiert und ohne doppelte Service-FAQ.', indexability: 'index', type: 'website' },
+  '/faq/': { title: 'Häufige Fragen zur MPU | MPU Wissen', description: 'Fachlich freigegebene Fragen zur MPU nach Themen sortiert und ohne doppelte Service-FAQ.', indexability: HAS_PUBLIC_FAQ ? 'index' : 'noindex', type: 'website' },
   '/ueber-uns/': { title: 'Über das Wissensportal | MPU Wissen', description: 'Aufgabe, Grenzen und redaktionelles Modell von mpudeincoach-wissen.de.', indexability: 'index', type: 'website' },
   '/redaktion/': { title: 'Redaktion und Fachprüfung | MPU Wissen', description: 'Rollen, Verantwortlichkeiten und Freigabestatus der MPU-Wissen-Redaktion.', indexability: 'index', type: 'website' },
   '/redaktionsrichtlinien/': { title: 'Redaktionsrichtlinien | MPU Wissen', description: 'Quellen-, Review- und Korrekturstandards für das MPU-Wissensportal.', indexability: 'index', type: 'website' },

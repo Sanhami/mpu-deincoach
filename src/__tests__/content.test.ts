@@ -37,21 +37,19 @@ describe('editorial content model', () => {
     const states: PublicationState[] = ['DRAFT', 'FACHREVIEW_REQUIRED', 'LEGAL_REVIEW_REQUIRED', 'APPROVED_NOINDEX', 'APPROVED_PUBLIC', 'ARCHIVED'];
     expect(states).toHaveLength(6);
     expect(ARTICLES.every((article) => states.includes(article.publicationState))).toBe(true);
-    expect(ARTICLES.filter(isArticlePublic).map((article) => article.slug).sort()).toEqual(['/mpu-begutachtungsstelle/', '/mpu-verfahren/']);
+    // O-14: the two expert-handoff articles are APPROVED_NOINDEX until review evidence is complete
+    expect(ARTICLES.filter(isArticlePublic)).toEqual([]);
+    expect(ARTICLES.filter((article) => article.publicationState === 'APPROVED_NOINDEX').map((article) => article.slug).sort()).toEqual(['/mpu-begutachtungsstelle/', '/mpu-verfahren/']);
   });
 
-  it('publishes only the six expert-approved FAQ items and scopes FAQ schema', () => {
-    const approved = ARTICLES.flatMap(publicFAQItems);
+  it('keeps the six item-level FAQ approvals but publishes none while their articles are noindex', () => {
+    const itemApproved = ARTICLES.flatMap((article) => article.faq).filter(isFAQPublic);
     const blocked = ARTICLES.flatMap((article) => article.faq).filter((item) => !isFAQPublic(item));
-    expect(approved).toHaveLength(6);
+    expect(itemApproved).toHaveLength(6);
     expect(blocked).toHaveLength(8);
-
-    const faqSchema = schemaForPath('/faq/').find((item) => (item as { '@type'?: string })['@type'] === 'FAQPage') as { mainEntity: unknown[] };
-    expect(faqSchema.mainEntity).toHaveLength(6);
-    for (const article of ARTICLES.filter(isArticlePublic)) {
-      const articleFaqSchema = schemaForPath(article.slug).find((item) => (item as { '@type'?: string })['@type'] === 'FAQPage') as { mainEntity: unknown[] };
-      expect(articleFaqSchema.mainEntity).toHaveLength(article.faq.length);
-    }
+    expect(ARTICLES.flatMap(publicFAQItems)).toHaveLength(0);
+    expect(schemaForPath('/faq/').some((item) => (item as { '@type'?: string })['@type'] === 'FAQPage')).toBe(false);
+    for (const article of ARTICLES) expect(schemaForPath(article.slug).some((item) => (item as { '@type'?: string })['@type'] === 'FAQPage')).toBe(false);
   });
 });
 
