@@ -1,100 +1,93 @@
 # O-1 und Netlify-Produktionsverknüpfung – Runbook
 
-Stand: 19.10.2026. **Alle Schritte führt der Inhaber aus.** Hier wurde nichts an DNS, Lovable oder Netlify-Einstellungen geändert.
-Quellen: öffentliche DNS-Abfrage (DNS-over-HTTPS, 19.10.2026), Netlify-Doku „Configure external DNS“, Lovable-Doku „Custom domain“.
+Stand: 20.10.2026. **Alle Schritte führt der Inhaber aus, DNS-Änderungen und das Trennen in Lovable erst nach gesonderter Freigabe.** Hier wurde nichts an DNS, Lovable oder Netlify-Einstellungen geändert.
+Quellen: öffentliche DNS-Abfragen (DNS-over-HTTPS, Cloudflare und Google, zuletzt 19.10.2026 22:01 UTC; autoritative TTL 3600 s), Netlify-Doku „Configure external DNS“ und „Environment variables“, Lovable-Doku „Custom domain“.
 
 ## 1. DNS-Ist-Stand `mpudeincoach-wissen.de` (Nameserver IONOS `ui-dns`, kein DNSSEC)
 
 | Name | Typ | Wert | Zweck | Bei O-1 |
 | --- | --- | --- | --- | --- |
-| `@` | A | `185.158.133.1` | Lovable-Edge | **entfernen** bzw. später ersetzen |
-| `www` | A | `185.158.133.1` | Lovable-Edge | **entfernen** bzw. später ersetzen |
-| `_lovable` | TXT | `lovable_verify=…` (Apex) | Lovable-Domainnachweis | **entfernen** (nach dem Disconnect) |
-| `_lovable.www` | TXT | `lovable_verify=…` (www) | Lovable-Domainnachweis | **entfernen** (nach dem Disconnect) |
-| `@` | TXT | `google-site-verification=…` | Search-Console-Property existiert bereits | **behalten** |
-| `@` | MX | `mx00.ionos.de`, `mx01.ionos.de` | IONOS-Mail | **behalten** |
-| `@` | TXT | `v=spf1 include:_spf-eu.ionos.com ~all` | Mail-SPF | **behalten** |
-| `_dmarc` | TXT/CNAME | `v=DMARC1; p=none;` | Mail-DMARC | **behalten** |
-| – | AAAA, CAA | keine | – | nichts tun (kein CAA = Let's Encrypt für Netlify erlaubt) |
+| `@` | A | `185.158.133.1` | Lovable-Edge (gemeinsame IP) | **entfernen** |
+| `www` | A | `185.158.133.1` | Lovable-Edge (gemeinsame IP) | **entfernen** |
+| `_lovable` | TXT | `lovable_verify=…` | Lovable-Domainnachweis (Apex) | **entfernen**, nach dem Trennen |
+| `_lovable.www` | TXT | `lovable_verify=…` | Lovable-Domainnachweis (www) | **entfernen**, nach dem Trennen |
+| `@` | MX | `10 mx00.ionos.de`, `10 mx01.ionos.de` | IONOS-Mail | **behalten** |
+| `@` | TXT | `v=spf1 include:_spf-eu.ionos.com ~all` | SPF | **behalten** |
+| `_dmarc` | **CNAME** | `dmarc.ionos.de` (liefert `v=DMARC1; p=none;`) | DMARC, von IONOS verwaltet | **behalten** (CNAME, kein eigener TXT) |
+| `@` | TXT | `google-site-verification=…` | Search-Console-Property | **behalten** |
+| – | AAAA, CAA | keine | – | nichts tun (kein CAA → Let's Encrypt erlaubt) |
+
+### Prüfskript (nur lesend)
+`node scripts/ops/dns-o1-check.mjs pre` – **unmittelbar vor** der Änderung: prüft alle Behalten-Einträge und die zu entfernenden Lovable-Einträge über zwei Resolver. Exit 0 = Ausgangslage wie dokumentiert, Exit 1 = **STOPP**.
+`node scripts/ops/dns-o1-check.mjs post` – nach der Änderung und erneut nach Ablauf der TTL (1 h): Exit 0 = Lovable-Einträge weg, alle Behalten-Einträge unverändert. Ein FAIL bei einem Behalten-Eintrag ist sofort zu beheben.
+Letzter `pre`-Lauf: 19.10.2026 22:01 UTC → **alle 10 Prüfungen OK**.
 
 ### Risiko einer verwaisten, übernehmbaren Zuordnung
-`185.158.133.1` ist eine **gemeinsam genutzte** Lovable-IP. Wird die Domain in Lovable getrennt, während der A-Record noch dorthin zeigt, zeigt die Domain auf eine Plattform, in der sie keinem Projekt mehr gehört. Lovable verlangt zwar einen projektbezogenen TXT-Nachweis, eine Übernahme ist also ohne DNS-Zugriff nicht offensichtlich möglich. Die internen Prüfregeln von Lovable sind aber nicht öffentlich. Deshalb gilt die Regel: **erst DNS umstellen, dann in Lovable trennen, dann die TXT-Nachweise löschen.** So zeigt die Domain zu keinem Zeitpunkt auf eine Plattform, auf der sie nicht verbunden ist.
+`185.158.133.1` ist eine gemeinsam genutzte Lovable-IP. Wird die Domain in Lovable getrennt, während der A-Record noch dorthin zeigt, zeigt die Domain auf eine Plattform, in der sie keinem Projekt mehr gehört. Lovable verlangt einen projektbezogenen TXT-Nachweis, deren interne Prüfregeln sind aber nicht öffentlich. Deshalb gilt: **erst die A-Records löschen, dann in Lovable trennen, dann die TXT-Nachweise löschen.** Die TXT-Nachweise bleiben bis zum Trennen bestehen, damit das bestehende Lovable-Projekt bis dahin der Domain zugeordnet bleibt.
 
-## 2. O-1 – empfohlene Variante A: Domain bis zum Launch offline
+## 2. O-1, Variante A (vom Inhaber gewählt): kontrollierte Trennung, Domain bis zum Launch offline
 
-Begründung: Es gibt noch kein freigegebenes Impressum. Eine erreichbare Website unter der Produktionsdomain ohne Impressum ist ein Rechtsrisiko, auch mit noindex. Variante A schaltet den Webauftritt ab, ohne die Mail zu berühren.
+Voraussetzung: gesonderte Freigabe des Inhabers für genau diese Schritte.
 
-1. **Vorher festhalten:** Screenshot der IONOS-DNS-Tabelle und von Lovable *Project → Settings → Domains* (Rückweg).
-2. **IONOS → Domain → DNS:** A-Record `@` (185.158.133.1) löschen, A-Record `www` (185.158.133.1) löschen. MX, SPF, DMARC und `google-site-verification` **nicht** anfassen. Falls IONOS automatisch einen eigenen Standard-A-Record (Parkseite) einsetzt, ist das unkritisch: Er gehört IONOS bzw. deinem Vertrag.
-3. **Lovable → Project → Settings → Domains:** bei `mpudeincoach-wissen.de` und `www.mpudeincoach-wissen.de` jeweils „⋯ → Disconnect“. **Kein Unpublish nötig;** das Projekt kann unter seiner `lovable.app`-Adresse bleiben oder separat stillgelegt werden.
-4. **IONOS:** TXT `_lovable` und `_lovable.www` löschen.
-5. **Prüfen** (nach der TTL, A-Record-TTL derzeit 1 h):
-   ```
-   curl -s -H 'accept: application/dns-json' 'https://cloudflare-dns.com/dns-query?name=mpudeincoach-wissen.de&type=A'
-   curl -sI https://mpudeincoach-wissen.de/
-   ```
-   Erwartung: kein `185.158.133.1` mehr, keine Lovable-Antwort.
-6. **Search Console** (Property existiert laut TXT-Nachweis): unter *Indexierung → Seiten* prüfen, ob `https://mpudeincoach-wissen.de/` indexiert ist; falls ja, *Entfernen → Vorübergehend entfernen*. Das ist kostenlos und schadet dem späteren Launch nicht.
+1. `node scripts/ops/dns-o1-check.mjs pre` → muss Exit 0 liefern. Bei Exit 1 abbrechen.
+2. **Sichern:** Screenshot der IONOS-DNS-Tabelle und von Lovable *Project → Settings → Domains* (Rückweg).
+3. **IONOS → Domains & SSL → `mpudeincoach-wissen.de` → DNS:** nur A `@` (185.158.133.1) und A `www` (185.158.133.1) löschen. **Nicht anfassen:** MX, SPF-TXT, `_dmarc`-CNAME, `google-site-verification`-TXT. Falls IONOS automatisch einen eigenen Standard-A-Record (Parkseite) setzt: unkritisch, er gehört zu deinem IONOS-Vertrag. Notieren.
+4. **Lovable → Project → Settings → Domains:** `mpudeincoach-wissen.de` und `www.mpudeincoach-wissen.de` jeweils „⋯ → Disconnect“. **Kein Unpublish nötig.**
+5. **IONOS:** TXT `_lovable` und `_lovable.www` löschen.
+6. `node scripts/ops/dns-o1-check.mjs post` sofort und nach 1 h; zusätzlich `curl -sI https://mpudeincoach-wissen.de/` (keine Lovable-Antwort mehr).
+7. **Search Console** (Property existiert): *Indexierung → Seiten* prüfen; ist `https://mpudeincoach-wissen.de/` indexiert → *Entfernen → Vorübergehend entfernen*.
 
-**Rückweg:** A-Records `@`/`www` wieder auf `185.158.133.1`, TXT-Werte aus dem Screenshot, in Lovable neu verbinden.
+**Rückweg:** A-Records `@`/`www` wieder auf `185.158.133.1`, TXT-Werte aus dem Screenshot, Domains in Lovable neu verbinden.
 
-## 3. Variante B (nur als Alternative): Domain sofort an Netlify, weiter mit noindex
+## 3. Auswirkung einer Produktionsverknüpfung auf das Staging
 
-Nur sinnvoll, wenn die Domain keine Ausfallzeit haben darf. Nachteil: Die Seite ist ohne freigegebenes Impressum öffentlich erreichbar. Ablauf: erst die Domain in Netlify hinzufügen (§ 4, Schritt 1), dann die DNS-Werte wie in § 4, Schritt 2, dann Lovable trennen, dann `_lovable`-TXT löschen.
+| Befund | Beleg |
+| --- | --- |
+| Die Netlify-Site `mpu-deincoach-staging` baut `main` im Kontext **production**. | Netlify setzt auf dem Staging-Host keinen eigenen Noindex-Header; dort gibt es nur unseren eigenen (Messung 19.10.2026). Auf Deploy Previews setzt Netlify zusätzlich `X-Robots-Tag: noindex`. |
+| Würde die Produktionsdomain an **diese** Site gehängt, wäre ihr `main`-Deploy die Produktion. Die heutige Staging-Adresse zeigt dann denselben Deploy. | Netlify-Doku: `URL` ist „your own custom domain if you set one“. |
+| → Es gäbe **keine unabhängige Staging-Umgebung** mehr. | – |
 
-## 4. Netlify-Produktionsverknüpfung (Launch, erst nach O-2 und O-3)
+### Technische Sperre (seit PR #2)
+Die Sperre fällt nur, wenn `scripts/indexing-policy.mjs` es erlaubt: `SITE_INDEXING=allow` **und** `CONTEXT=production` **und** `URL=https://mpudeincoach-wissen.de`.
 
-Empfohlenes Modell: **dieselbe Netlify-Site** (`mpu-deincoach-staging`), damit CI, Deploy Previews und Historie erhalten bleiben. Deploy Previews behalten in jedem Fall `noindex`. Netlify setzt dort zusätzlich einen eigenen `X-Robots-Tag: noindex`, auf der Preview von PR #1 beobachtet.
+| Umgebung | `CONTEXT` / `URL` | Ergebnis mit `SITE_INDEXING=allow` |
+| --- | --- | --- |
+| Staging-Site (heute und künftig) | production / `https://mpu-deincoach-staging.netlify.app` | **gesperrt** (getestet) |
+| Deploy Preview | deploy-preview | **gesperrt** (getestet) |
+| Branch-Deploy | branch-deploy | **gesperrt** (getestet) |
+| Produktions-Site mit verbundener Domain | production / `https://mpudeincoach-wissen.de` | Sperre aufgehoben |
 
-1. **Netlify → Site → Domain management → Add a domain:** `mpudeincoach-wissen.de` als **Primary domain**, `www.mpudeincoach-wissen.de` als Alias. Die Domain vor der DNS-Umstellung in Netlify anlegen; damit ist sie dieser Site zugeordnet.
-2. **IONOS-DNS** (IONOS kennt kein ALIAS/ANAME):
-   - `@` → **A `75.2.60.5`** (Netlify-Load-Balancer, laut Netlify-Doku der Fallback für Provider ohne ALIAS)
-   - `www` → **CNAME `mpu-deincoach-staging.netlify.app`** (vorher den A-Record `www` löschen)
-   - MX/SPF/DMARC/Google-TXT unverändert
-3. **HTTPS:** Netlify stellt das Let's-Encrypt-Zertifikat automatisch aus, sobald DNS greift (kein CAA vorhanden, also nichts nötig). Unter *HTTPS* abwarten, bis „Certificate active“ angezeigt wird.
-4. **Indexierungsschalter (neu in PR #1):** *Site configuration → Environment variables* → `SITE_INDEXING` = `allow`, **nur für den Kontext „Production“**. Ohne diese Variable bleibt `X-Robots-Tag: noindex, nofollow` aktiv. Andere Werte wie `Allow` oder `true` heben die Sperre nicht auf (getestet). Danach den Production-Deploy neu auslösen. **Nicht** in `netlify.toml` eintragen, ein Test verhindert das.
-5. `VITE_SITE_URL` ist bereits in `netlify.toml` auf `https://mpudeincoach-wissen.de` gesetzt. Nichts tun.
-6. **Hinweis zu Netlify:** Netlify empfiehlt bei externem DNS eine Subdomain als Primary, weil der Apex über den Load Balancer statt über direktes CDN-Routing läuft. Das Portal bleibt trotzdem beim Apex, weil alle Canonicals, die Sitemap und die Markenentscheidung darauf festgelegt sind. Ein Wechsel wäre eine eigene Entscheidung.
-7. **GitHub (kostenlos für öffentliche Repos):** Branch-Schutz für `main` mit erforderlichem Check `qa`.
+Ein abgelehnter Opt-in steht als Warnung im Build-Log. `npm run crawl` schlägt fehl, wenn ein Build ohne erlaubte Aufhebung keinen Noindex-Header enthält.
+
+## 4. Empfohlenes Produktionsmodell: eigene Netlify-Site (erst nach O-2, O-3)
+
+1. **Netlify → Add new site → Import from GitHub → `Sanhami/mpu-deincoach`**, Name z. B. `mpudeincoach-wissen`, **Production branch: `production`** (neuer Branch, entsteht beim ersten freigegebenen Release aus `main`). Build `npm run build`, Publish `dist` (aus `netlify.toml`). Deploy Previews und Branch-Deploys auf dieser Site **deaktivieren** (laufen bereits auf der Staging-Site).
+2. Die bestehende Site `mpu-deincoach-staging` bleibt unverändert Staging für `main`. Sie kann die Sperre nie aufheben, weil ihre `URL` die netlify.app-Adresse ist.
+3. **Domain management** der neuen Site: `mpudeincoach-wissen.de` als Primary, `www` als Alias.
+4. **IONOS-DNS** (IONOS kennt kein ALIAS/ANAME): `@` → **A `75.2.60.5`**; `www` → **CNAME `<neue-site>.netlify.app`**. MX/SPF/`_dmarc`/Google-TXT unverändert. Danach `node scripts/ops/dns-o1-check.mjs post` (die Lovable-Einträge müssen weiterhin fehlen).
+5. **HTTPS:** Let's Encrypt automatisch (kein CAA). Abwarten, bis „Certificate active“ angezeigt wird.
+6. **Indexierung:** in der **neuen** Site `SITE_INDEXING=allow` setzen (Scope „Builds“). Erst wirksam, wenn die Domain Primary ist (Bedingung `URL`).
+7. **Release-Ablauf:** `main` → (Freigabe) → Merge in `production` → Produktions-Deploy. Damit ist jeder Produktions-Deploy eine bewusste Freigabe, und es entstehen nur Builds pro Release.
+8. **Kosten:** Eine zweite Site ist im Netlify-Free-Plan grundsätzlich möglich. Vor dem Anlegen im Konto prüfen, ob Build-/Credit-Kontingent und Site-Anzahl ohne Upgrade reichen. **Nichts buchen.**
+9. **GitHub (kostenlos, öffentliches Repo):** Branch-Schutz für `main` und `production` mit erforderlichem Check `qa`.
+
+*Alternative ohne zweite Site:* Produktionsdomain an die bestehende Site, Staging als Branch-Deploy eines Branches `staging` (`CONTEXT=branch-deploy` → Sperre bleibt). Nachteil: Die bisherige Staging-Adresse wird zur Produktion, und Staging bekommt eine neue Adresse. Nicht empfohlen.
 
 ### Abnahme direkt nach dem Launch
 
 | Prüfung | Erwartung |
 | --- | --- |
 | `curl -sI https://mpudeincoach-wissen.de/` | 200, **kein** `X-Robots-Tag`, gültiges Zertifikat |
-| `curl -sI http://mpudeincoach-wissen.de/` und `https://www.…/` | **eine** 301 auf `https://mpudeincoach-wissen.de/` |
-| `https://mpu-deincoach-staging.netlify.app/` | 301 auf die Primary Domain (Netlify-Standard) |
-| 11 Sitemap-URLs | 200, Self-Canonical, `index,follow` |
-| `/mpu-kosten/`, `/impressum/` usw. | 200 mit `noindex` (Impressum erst nach O-2 indexierbar, siehe § 5) |
-| unbekannte URL, Ellwangen | 404 |
-| 10 Legacy-410-Pfade | 410 |
-| `npm run links:external` | alle Ziele 200 |
-| Search Console | Sitemap einreichen, Hauptseite verknüpfen |
+| `http://mpudeincoach-wissen.de/`, `https://www.…/` | eine 301 auf `https://mpudeincoach-wissen.de/` |
+| `https://mpu-deincoach-staging.netlify.app/` | weiterhin `X-Robots-Tag: noindex, nofollow` |
+| Sitemap-URLs | 200, Self-Canonical, `index,follow` |
+| `/mpu-verfahren/`, `/mpu-begutachtungsstelle/`, `/faq/` | noindex, bis O-14-Nachweise vorliegen |
+| unbekannte URL, Ellwangen | 404 ohne Canonical |
+| 10 Legacy-410-Pfade | 410 ohne Canonical |
+| `npm run links:external`; `node scripts/ops/dns-o1-check.mjs post` | alle Ziele 200; Mail-Einträge intakt |
 
-**Rückweg:** `SITE_INDEXING` löschen und neu deployen (Sperre wieder aktiv), oder die Domain in Netlify entfernen und die DNS-Einträge zurücksetzen.
+**Rückweg:** `SITE_INDEXING` in der Produktions-Site löschen und neu deployen (Sperre aktiv), oder die Domain dort entfernen.
 
-## 5. Rechtstexte – vollständige Freigabeanforderungen
+## 5. Rechtstexte
 
-Grundlage: `analysis/human-approval/10-draft-impressum.md`, `12-draft-datenschutz.md`, `16-legal-release-matrix.md`. Keine dieser Fragen kann technisch entschieden werden.
-
-| # | Anforderung | Stand | Wer |
-| --- | --- | --- | --- |
-| R1 | **Domain in beiden Entwürfen korrigieren**: Die Entwürfe nennen `mpu-deincoach.de`, das Portal läuft künftig unter `mpudeincoach-wissen.de` | offen (neu gefunden) | Redaktion, dann Rechtsprüfung |
-| R2 | Impressum: Anbieterangaben (Einzelunternehmen, Name, ladungsfähige Anschrift, E-Mail, schnelle Kontaktmöglichkeit) | Fakten geliefert, Entwurf vorhanden | juristische Freigabe |
-| R3 | Impressum: Verantwortlicher für redaktionelle Inhalte (Entwurf enthält Abschnitt „Redaktionell verantwortlich“) | Entwurf | juristische Freigabe |
-| R4 | Datenschutz: Rechtsgrundlage und Speicherdauer der Netlify-Request-/Sicherheitslogs | `[PROVIDER FACT REQUIRED]` im Entwurf | Inhaber (Netlify-Konto) + Rechtsprüfung |
-| R5 | Datenschutz: Netlify-AVV/DPA-Anwendbarkeit auf das konkrete Konto, Unterauftragnehmer, Drittlandübermittlung (USA) | offen | Inhaber + Rechtsprüfung |
-| R6 | Datenschutz: E-Mail-Kontakt über IONOS (Rechtsgrundlage, Löschfrist, Vertragsdetails) | offen | Inhaber + Rechtsprüfung |
-| R7 | Datenschutz: Nennung von GitHub (reine Entwicklungsinfrastruktur) | offen | Rechtsprüfung |
-| R8 | Datenschutz: zuständige Aufsichtsbehörde und vollständige Pflichtangaben | offen | Rechtsprüfung |
-| R9 | AGB: Anwendbarkeitsentscheidung protokollieren (technisch: kein Verkauf, keine Konten auf dieser Domain → voraussichtlich keine AGB) | offen | Inhaber/Rechtsprüfung |
-| R10 | Nach Freigabe: Platzhalterseiten durch die freigegebenen Texte ersetzen; über Indexierbarkeit der Rechtsseiten entscheiden (üblich: `noindex` lassen, aber erreichbar) | Code bereit | Redaktion |
-
-## 6. Fachliche Freigabe vor dem Launch (Belegprüfung vom 19.10.2026)
-
-Die beiden indexierbaren Artikel (`/mpu-verfahren/`, `/mpu-begutachtungsstelle/`) beruhen auf einer **Experten-Entscheidung auf Artikelebene vom 03.09.2026**. Die vom Repo selbst verlangten Nachweise fehlen:
-- Prüferformular (`04-review-approval-template.md`) mit Name, Qualifikation, Commit, Datum und Nachweisort
-- Nominierung (`02-reviewer-nomination-form.md`)
-- eine **rechtliche** Prüfung, obwohl beide Artikel `LEGAL_REVIEW` als Anforderung tragen
-
-Die öffentlichen Texte sind seit PR #1 auf diesen Stand reduziert. Für den Launch muss der Inhaber entweder die Nachweise ergänzen (der Name muss nicht veröffentlicht werden) **oder** beide Artikel vor dem Launch auf `APPROVED_NOINDEX` setzen lassen → `MPU_OWNER_ACTIONS.md` O-14.
+Vollständige Freigabeprüfung: `RECHTSTEXTE_FREIGABEPRUEFUNG.md`.
