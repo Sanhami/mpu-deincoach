@@ -62,3 +62,14 @@ Produktivdeployment, Merge nach `main`, Entfernen des Staging-Noindex, DNS-/Lova
 | DNS-Analyse O-1 (DoH, autoritative TTL 3600 s), Lovable- und Netlify-Doku | Runbook `NETLIFY_PRODUKTION_UND_O1.md` |
 | Indexierungsschalter `SITE_INDEXING=allow` (Standard: gesperrt) mit Tests und Crawl-Guard | 44/44, siehe Release-Status |
 | Rechtstext-Entwürfe nennen noch `mpu-deincoach.de` | als R1 dokumentiert |
+
+## 19./20.10.2026 – O-14, Merge, Staging-Schutz, O-1-Vorbereitung, Rechtstexte
+
+| Schritt | Ergebnis |
+| --- | --- |
+| O-14 (Inhaberentscheidung B): TDD, 5 Tests rot → beide Artikel `APPROVED_NOINDEX`; FAQ an Artikelstatus gekoppelt (sonst wären die 6 Handoff-FAQ weiter indexierbar gewesen); leere `/faq/` noindex | Commit `82417ba`, 49/49, Crawl 8 indexierbar |
+| Deploy Preview + CI geprüft → Merge-Bedingungen erfüllt → PR #1 gemergt | Merge `2dc684f` |
+| Staging nach dem Merge gemessen | Sitemap 8, Artikel/FAQ noindex, Header überall, 404/410 korrekt |
+| Staging-Analyse | Staging-Site baut `main` im Kontext production; nur unser Header sperrt → `indexing-policy.mjs` (allow + CONTEXT + URL), 5 Tests, 4 Build-Szenarien |
+| O-1: `scripts/ops/dns-o1-check.mjs` (lesend, 2 Resolver) | `pre` 10/10 OK; DMARC ist CNAME → `dmarc.ionos.de` (im ersten Lauf falsch erkannt, korrigiert) |
+| Rechtstexte: Domain in beiden Entwürfen korrigiert, 9 `[OFFEN]`-Marken, Prüfpaket `RECHTSTEXTE_FREIGABEPRUEFUNG.md`, Nachtrag zur Markenentscheidung | PR #2 |

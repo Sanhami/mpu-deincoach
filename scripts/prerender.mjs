@@ -1,6 +1,7 @@
 import { mkdir, readFile, rm, writeFile } from 'node:fs/promises';
 import { dirname, join } from 'node:path';
 import { pathToFileURL } from 'node:url';
+import { indexingDecision } from './indexing-policy.mjs';
 
 const root = process.cwd();
 const dist = join(root, 'dist');
@@ -39,13 +40,15 @@ await writeFile(
   'utf8',
 );
 
-// Global noindex (public/_headers) stays on unless the production build explicitly opts in.
-// Set SITE_INDEXING=allow only in the Netlify production context, and only after release approval.
-if (process.env.SITE_INDEXING === 'allow') {
+// Global noindex (public/_headers) stays on unless indexing-policy.mjs allows lifting it
+// (SITE_INDEXING=allow AND Netlify CONTEXT=production AND URL=production domain).
+const indexing = indexingDecision();
+if (process.env.SITE_INDEXING && !indexing.lift) console.warn(`SITE_INDEXING set but refused, global noindex kept: ${indexing.reason}`);
+if (indexing.lift) {
   const headersPath = join(dist, '_headers');
   const headers = await readFile(headersPath, 'utf8');
   await writeFile(headersPath, headers.replace(/^[ \t]*X-Robots-Tag:[^\n]*\r?\n/m, ''), 'utf8');
-  console.log('SITE_INDEXING=allow: global X-Robots-Tag removed from dist/_headers');
+  console.log(`Global X-Robots-Tag removed from dist/_headers: ${indexing.reason}`);
 }
 
 await rm(join(root, 'dist-server'), { recursive: true, force: true });

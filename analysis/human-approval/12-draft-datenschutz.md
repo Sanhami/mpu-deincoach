@@ -2,6 +2,8 @@
 
 This draft is not approved for publication. Bracketed items require provider evidence or legal review before the legal placeholder may be replaced.
 
+Überarbeitung 20.10.2026: Domain auf `mpudeincoach-wissen.de` korrigiert, offene Pflichtangaben als `[OFFEN …]` markiert. Keine juristische Bewertung, keine Freigabe.
+
 ## Datenschutzerklärung
 
 ### 1. Verantwortlicher
@@ -18,7 +20,7 @@ Weitere Kontaktadresse: beratung@mpudeincoach.de
 
 ### 2. Zweck und technische Architektur dieser Website
 
-`mpu-deincoach.de` ist das Informations- und Wissensportal `MPUdeincoach Wissen`. Die Website verkauft keine Leistungen, nimmt keine Buchungen oder Zahlungen an und führt keine Benutzerkonten. Die Seiten werden als statische Dateien über Netlify ausgeliefert. Kommerzielle Leistungen werden auf der getrennten Website `mpudeincoach.de` angeboten.
+`mpudeincoach-wissen.de` ist das Informations- und Wissensportal `MPUdeincoach Wissen`. Die Website verkauft keine Leistungen, nimmt keine Buchungen oder Zahlungen an und führt keine Benutzerkonten. Die Seiten werden als statische Dateien über Netlify ausgeliefert. Kommerzielle Leistungen werden auf der getrennten Website `mpudeincoach.de` angeboten.
 
 ### 3. Aufruf der Website und Hosting über Netlify
 
@@ -28,6 +30,8 @@ Netlify, Inc.<br>
 512 2nd Street, Suite 200<br>
 San Francisco, CA 94107<br>
 USA
+
+`[OFFEN – PROVIDER-FAKT: Anschrift und Vertragspartner (Netlify, Inc.) zum Freigabedatum gegen die aktuelle Netlify-DPA prüfen.]`
 
 Beim Abruf einer Seite verarbeitet Netlify die technisch erforderliche Anfrage über seine CDN- und Sicherheitsinfrastruktur. Dabei können insbesondere IP-Adresse, angeforderte URL einschließlich gegebenenfalls enthaltener Query-Parameter, User-Agent, HTTP-Methode und Status, Inhalts- und Cache-Informationen, eine Request-ID sowie für Routing oder Sicherheit abgeleitete Standortinformationen verarbeitet werden. Die Verarbeitung dient der Auslieferung, Stabilität, Fehleranalyse und Absicherung der Website.
 
@@ -77,7 +81,11 @@ In der Anwendung sind keine Analysewerkzeuge, Tag Manager, Tracking-Pixel oder S
 
 ### 11. Formulare, eingebettete Inhalte, Schriftarten und APIs
 
-Es gibt kein Kontakt-, Buchungs-, Checkout-, Abonnement- oder Kontosystem. Das HTML-Suchformular arbeitet ausschließlich clientseitig und wird nicht an Netlify Forms übermittelt. Die Website lädt keine externen Schriftarten, Drittanbieter-Embeds oder externen Anwendungs-APIs. Die ausgelieferten Laufzeitressourcen stammen von derselben Netlify-Domain.
+Es gibt kein Kontakt-, Buchungs-, Checkout-, Abonnement- oder Kontosystem. Das HTML-Suchformular arbeitet ausschließlich clientseitig und wird nicht an Netlify Forms übermittelt. Die Website lädt keine externen Schriftarten, Drittanbieter-Embeds oder externen Anwendungs-APIs. Die ausgelieferten Laufzeitressourcen stammen von derselben Domain, über die die Website ausgeliefert wird.
+
+### 11a. Domain und DNS
+
+`[OFFEN – RECHTSPRÜFUNG/PROVIDER-FAKT: Die Domain und ihre Nameserver liegen bei IONOS. Klären, ob die Namensauflösung durch IONOS-Nameserver in der Datenschutzerklärung genannt werden muss. Vor der Veröffentlichung sicherstellen, dass die Domain nicht mehr über das frühere Lovable-Hosting ausgeliefert wird (O-1); sonst wäre Abschnitt 3 unzutreffend.]`
 
 ### 12. GitHub als Quellcode- und Deployment-Infrastruktur
 
@@ -92,6 +100,8 @@ Unter den gesetzlichen Voraussetzungen bestehen insbesondere Rechte auf Auskunft
 Offizielle Grundlage: [Artikel 15 bis 21 DSGVO](https://eur-lex.europa.eu/legal-content/DE/TXT/?toc=OJ%3AL%3A2016%3A119%3AFULL&uri=uriserv%3AOJ.L_.2016.119.01.0001.01.DEU)
 
 Zuständige Aufsichtsbehörde und vollständige Pflichtangaben: `[LEGAL REVIEW REQUIRED]`
+
+`[OFFEN – RECHTSPRÜFUNG, Art. 13 DSGVO: Datenschutzbeauftragter (Benennungspflicht voraussichtlich nicht gegeben – bestätigen); Hinweis, dass keine automatisierte Entscheidungsfindung/Profiling erfolgt; Angabe, ob die Bereitstellung von Daten erforderlich ist; allgemeine Speicherdauer-Regel.]`
 
 ### 14. Datenschutzanfragen und Korrekturen
 

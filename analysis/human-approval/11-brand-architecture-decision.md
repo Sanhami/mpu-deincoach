@@ -30,3 +30,7 @@ Both sites use one logo family, core typography, Ink `#282828`, Signal Yellow `#
 Knowledge to commercial uses contextual language such as `Persönliche Hilfe bei deinem MPU-Fall`, `Zur Fallanalyse bei MPUdeincoach`, or `Zur individuellen MPU-Vorbereitung`.
 
 Commercial to knowledge should use `MPU Wissen`, `Zum MPUdeincoach Wissensportal`, or `Ausführlich im MPUdeincoach Wissensbereich nachlesen`.
+
+## Nachtrag 20.10.2026 – Domain des Wissensportals
+
+Die Inhaberaufträge vom 19./20.10.2026 nennen als geplante Domain des Wissensportals `mpudeincoach-wissen.de`. Code, `netlify.toml`, Canonicals und Sitemap verwenden diese Domain seit Commit `09028b9`. Die oben genannte Domain `mpu-deincoach.de` ist die frühere WordPress-Domain (derzeit `423 Locked`); ihre weitere Rolle ist offen (Owner-Action O-8). Die übrigen Festlegungen dieser Entscheidung bleiben unverändert.
