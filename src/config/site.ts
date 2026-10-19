@@ -21,7 +21,7 @@ export const EDITORIAL_TEAM: PersonRef = {
 export const CTA_LINKS = {
   FALLANALYSE: 'https://mpudeincoach.de/#fallanalyse',
   MPU_VORBEREITUNG: 'https://mpudeincoach.de/mpu-vorbereitung',
-  ALKOHOL: 'https://mpudeincoach.de/mpu-vorbereitung-alkohol',
+  ALKOHOL: 'https://mpudeincoach.de/mpu-wegen-alkohol',
   CANNABIS: 'https://mpudeincoach.de/mpu-vorbereitung-cannabis',
   ABSTINENZ: 'https://mpudeincoach.de/mpu-abstinenznachweis',
   MPU_KOMPASS: 'https://mpudeincoach.de/mpu-kompass',

@@ -94,7 +94,25 @@ for (const { from, to, status } of redirects) {
 }
 
 const goneCount = [...htmlByRoute.values()].filter((html) => html.includes('<title>Inhalt entfernt | MPU Wissen</title>')).length;
-if (htmlFiles.length !== 31) failures.push(`expected 31 HTML files, found ${htmlFiles.length}`);
+// 29 = 12 static pages + 6 articles + 10 gone pages + 404.html (undecided MANUAL_REVIEW routes stay real 404s)
+if (htmlFiles.length !== 29) failures.push(`expected 29 HTML files, found ${htmlFiles.length}`);
+const redirectSource = await readFile(join(root, 'src', 'config', 'redirects.ts'), 'utf8');
+const manualReview = [...redirectSource.matchAll(/from: '([^']+)', action: 'MANUAL_REVIEW'/g)].map((match) => match[1]);
+if (!manualReview.length) failures.push('no MANUAL_REVIEW route found in src/config/redirects.ts; update the crawl guard');
+for (const route of manualReview) {
+  if (htmlByRoute.has(route)) failures.push(`${route}: MANUAL_REVIEW route must not be prerendered (would answer 200)`);
+}
+if (htmlByRoute.has('/404/')) failures.push('/404/: duplicate crawlable 404 page');
+const robotsTxt = await readFile(join(dist, 'robots.txt'), 'utf8');
+for (const [, rule] of robotsTxt.matchAll(/^Disallow:\s*(\S+)/gim)) {
+  for (const route of htmlByRoute.keys()) if (route.startsWith(rule)) failures.push(`robots.txt disallows ${route}; crawlers could not see its noindex`);
+}
+for (const [route, html] of htmlByRoute) {
+  for (const [, json] of html.matchAll(/<script type="application\/ld\+json"[^>]*>([\s\S]*?)<\/script>/g)) {
+    try { const data = JSON.parse(json); if (data['@context'] !== 'https://schema.org' || !data['@type']) failures.push(`${route}: JSON-LD without @context/@type`); }
+    catch { failures.push(`${route}: invalid JSON-LD`); }
+  }
+}
 if (indexable.length !== 11) failures.push(`expected 11 indexable pages, found ${indexable.length}`);
 if (redirects.length !== 18) failures.push(`expected 18 redirects, found ${redirects.length}`);
 if (goneCount !== 10) failures.push(`expected 10 gone pages, found ${goneCount}`);

@@ -1,6 +1,9 @@
 import { ARTICLES, articleBySlug } from './content/articles';
 import { SITE } from './config/site';
 import { LEGACY_REDIRECTS } from './config/redirects';
+
+/** Entity of the commercial MPUdeincoach site (one brand, two domains; see analysis/human-approval/11-brand-architecture-decision.md). */
+const MAIN_SITE_ORGANIZATION_ID = 'https://mpudeincoach.de/#organization';
 import { articleIndexability, isArticlePublic, publicFAQItems } from './content/model';
 
 export interface SeoData {
@@ -44,7 +47,7 @@ export function getPageSeo(inputPath: string): SeoData {
 
 export function schemaForPath(inputPath: string): object[] {
   const path = cleanPath(inputPath.split('?')[0]);
-  const schemas: object[] = [{ '@context': 'https://schema.org', '@type': 'Organization', '@id': `${SITE.url}/#organization`, name: SITE.legalName, url: SITE.url }];
+  const schemas: object[] = [{ '@context': 'https://schema.org', '@type': 'Organization', '@id': `${SITE.url}/#organization`, name: SITE.legalName, url: SITE.url, parentOrganization: { '@id': MAIN_SITE_ORGANIZATION_ID } }];
   if (path === '/') schemas.push({ '@context': 'https://schema.org', '@type': 'WebSite', '@id': `${SITE.url}/#website`, url: SITE.url, name: SITE.name, inLanguage: SITE.language, publisher: { '@id': `${SITE.url}/#organization` }, potentialAction: { '@type': 'SearchAction', target: `${SITE.url}/?q={search_term_string}`, 'query-input': 'required name=search_term_string' } });
   if (path === '/faq/') {
     const approvedFAQ = ARTICLES.flatMap(publicFAQItems);
@@ -52,14 +55,15 @@ export function schemaForPath(inputPath: string): object[] {
   }
   const article = articleBySlug(path);
   if (article && isArticlePublic(article)) {
-    schemas.push({ '@context': 'https://schema.org', '@type': 'Article', headline: article.title, description: article.excerpt, datePublished: article.publishedAt, dateModified: article.updatedAt, mainEntityOfPage: article.canonical, author: { '@type': article.author.kind, name: article.author.name }, publisher: { '@id': `${SITE.url}/#organization` }, citation: article.sources.filter((source) => source.url).map((source) => source.url) });
+    schemas.push({ '@context': 'https://schema.org', '@type': 'Article', headline: article.title, description: article.excerpt, inLanguage: SITE.language, isPartOf: { '@id': `${SITE.url}/#website` }, datePublished: article.publishedAt, dateModified: article.updatedAt, mainEntityOfPage: article.canonical, author: { '@type': article.author.kind, name: article.author.name }, publisher: { '@id': `${SITE.url}/#organization` }, citation: article.sources.filter((source) => source.url).map((source) => source.url) });
     const approvedFAQ = publicFAQItems(article);
     if (article.schema.includes('FAQPage') && approvedFAQ.length) schemas.push({ '@context': 'https://schema.org', '@type': 'FAQPage', mainEntity: approvedFAQ.map((item) => ({ '@type': 'Question', name: item.question, acceptedAnswer: { '@type': 'Answer', text: item.answer } })) });
   }
-  if (path !== '/' && !LEGACY_REDIRECTS.some((route) => route.from === path)) {
-    const seo = getPageSeo(path);
-    schemas.push({ '@context': 'https://schema.org', '@type': 'BreadcrumbList', itemListElement: [{ '@type': 'ListItem', position: 1, name: 'Start', item: SITE.url }, { '@type': 'ListItem', position: 2, name: seo.title.split('|')[0].trim(), item: seo.canonical }] });
-  }
+  // Breadcrumbs only for real pages, mirroring the visible trail (articles sit below /wissen/).
+  const crumbs = article
+    ? [['Start', `${SITE.url}/`], ['Wissen', `${SITE.url}/wissen/`], [article.title, article.canonical]]
+    : path !== '/' && CUSTOM[path] ? [['Start', `${SITE.url}/`], [CUSTOM[path].title.split('|')[0].trim(), `${SITE.url}${path}`]] : [];
+  if (crumbs.length) schemas.push({ '@context': 'https://schema.org', '@type': 'BreadcrumbList', itemListElement: crumbs.map(([name, item], index) => ({ '@type': 'ListItem', position: index + 1, name, item })) });
   return schemas;
 }
 

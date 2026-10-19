@@ -1,7 +1,7 @@
 User-agent: *
 Allow: /
-Disallow: /impressum/
-Disallow: /datenschutz/
-Disallow: /agb/
+
+# Nicht freigegebene Seiten werden per <meta name="robots" content="noindex"> gesperrt.
+# Kein Disallow: Suchmaschinen müssen die Seiten abrufen können, um noindex zu sehen.
 
 Sitemap: https://mpudeincoach-wissen.de/sitemap.xml
