@@ -13,7 +13,7 @@ export function KnowledgeIndexPage() {
 }
 
 export function GuideIndexPage() {
-  return <main id="main-content"><div className="wrap"><Breadcrumbs items={[{ label: 'Ratgeber' }]} /><header className="page-header"><span className="eyebrow">Redaktionelle Bibliothek</span><h1>MPU-Ratgeber</h1><p>Quellenorientierte Arbeitsfassungen. Risikoinhalte bleiben bis zur dokumentierten Fachfreigabe auf noindex.</p></header><div className="card-grid page-grid">{ARTICLES.map((article) => <KnowledgeCard key={article.id} article={article} />)}</div></div></main>;
+  return <main id="main-content"><div className="wrap"><Breadcrumbs items={[{ label: 'Ratgeber' }]} /><header className="page-header"><span className="eyebrow">Redaktionelle Bibliothek</span><h1>MPU-Ratgeber</h1><p>Quellenorientierte Arbeitsfassungen. Risikoinhalte bleiben noindex, bis ihre fachliche Prüfung abgeschlossen ist; den Status zeigt jeder Artikel.</p></header><div className="card-grid page-grid">{ARTICLES.map((article) => <KnowledgeCard key={article.id} article={article} />)}</div></div></main>;
 }
 
 export function GlossaryPage() {

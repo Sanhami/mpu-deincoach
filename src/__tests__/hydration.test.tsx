@@ -40,4 +40,18 @@ describe('client hydration of prerendered HTML', () => {
       expect(await hydrationErrors(url)).toEqual([]);
     });
   }
+
+  it('removes canonical and og:url from the head after hydrating an error page', async () => {
+    document.head.innerHTML = '<link rel="canonical" href="https://mpudeincoach-wissen.de/not-found/"><meta property="og:url" content="https://mpudeincoach-wissen.de/not-found/">';
+    expect(await hydrationErrors('/gibtsnicht/')).toEqual([]);
+    expect(document.head.querySelector('link[rel="canonical"]')).toBeNull();
+    expect(document.head.querySelector('meta[property="og:url"]')).toBeNull();
+    expect(document.head.querySelector('meta[name="robots"]')?.getAttribute('content')).toContain('noindex');
+  });
+
+  it('sets a self-canonical after hydrating a real page', async () => {
+    document.head.innerHTML = '';
+    expect(await hydrationErrors('/mpu-verfahren/')).toEqual([]);
+    expect(document.head.querySelector('link[rel="canonical"]')?.getAttribute('href')).toBe('https://mpudeincoach-wissen.de/mpu-verfahren/');
+  });
 });

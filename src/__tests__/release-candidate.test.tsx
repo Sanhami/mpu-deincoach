@@ -83,11 +83,32 @@ describe('release candidate guards', () => {
     for (const path of staticPaths) expect(render(path).html).not.toContain('href="/mpu-ablauf/"');
   });
 
-  it('does not promise a named expert review that the approved articles do not show', () => {
-    for (const path of ['/', '/ratgeber/']) {
+  // Evidence in analysis/: an article-level expert decision (handoff 2026-09-03) exists, but no completed
+  // reviewer record (name, qualification, commit, evidence location) and no documented legal review.
+  it('claims no more about expert review than the repository documents', () => {
+    const approved = ARTICLES.filter(isArticlePublic).map((article) => article.slug);
+    for (const path of ['/', '/ratgeber/', ...approved]) {
       const html = render(path).html;
-      expect(html).not.toMatch(/namentliche[rn]? Fach(prüfung|freigabe)/);
-      expect(html).toMatch(/dokumentierte[rn]? Fach(prüfung|freigabe)/);
+      expect(html).not.toMatch(/(namentliche|dokumentierte)[rn]? Fach(prüfung|freigabe)/);
+      expect(html).not.toMatch(/rechtliche Prüfung[^.<]*abgeschlossen/);
+    }
+    for (const path of approved) expect(render(path).html).toContain('Experten-Handoff vom 3. September 2026');
+    expect(render('/').html).toContain('Den Prüfstatus zeigt jeder Artikel.');
+  });
+
+  it('emits no canonical and no og:url on 404 and 410 pages (no canonical to a non-existent URL)', () => {
+    for (const path of ['/not-found/', '/gibtsnicht/', '/a/b/c/', '/mpu-vorbereitung-ellwangen/', '/warenkorb/']) {
+      const { head } = render(path);
+      expect(head).not.toContain('rel="canonical"');
+      expect(head).not.toContain('og:url');
+      expect(head).toContain('noindex');
+      expect(head).not.toContain('/not-found/');
+    }
+  });
+
+  it('keeps a self-canonical on every real page', () => {
+    for (const path of staticPaths.filter((item) => !LEGACY_REDIRECTS.some((route) => route.from === item))) {
+      expect(render(path).head).toContain(`<link rel="canonical" href="https://mpudeincoach-wissen.de${path}">`);
     }
   });
 });

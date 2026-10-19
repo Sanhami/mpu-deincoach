@@ -46,7 +46,10 @@ for (const [route, html] of htmlByRoute) {
   const h1Count = (html.match(/<h1(?:\s|>)/gi) || []).length;
   if (!title) failures.push(`${route}: missing title`);
   if (!description) failures.push(`${route}: missing meta description`);
-  if (!canonical) failures.push(`${route}: missing canonical`);
+  // Error pages (404.html, 410 pages) must not declare a canonical; every real page needs an exact self-canonical.
+  const isStatusPage = route === '/404.html' || /<title>(Inhalt entfernt|Seite nicht gefunden) \| MPU Wissen<\/title>/.test(html);
+  if (isStatusPage && (canonical || /property=["']og:url["']/.test(html))) failures.push(`${route}: error page declares canonical/og:url ${canonical ?? ''}`);
+  if (!isStatusPage && canonical !== `https://mpudeincoach-wissen.de${route}`) failures.push(`${route}: expected self-canonical, found ${canonical ?? '(missing)'}`);
   if (h1Count !== 1) failures.push(`${route}: expected one H1, found ${h1Count}`);
   if (!/noindex/i.test(robots)) indexable.push({ route, title, description, canonical });
 

@@ -9,7 +9,8 @@ import { articleIndexability, isArticlePublic, publicFAQItems } from './content/
 export interface SeoData {
   title: string;
   description: string;
-  canonical: string;
+  /** Absent on 404/410 pages: an error page must not declare a canonical URL. */
+  canonical?: string;
   indexability: 'index' | 'noindex';
   type?: 'website' | 'article';
 }
@@ -41,8 +42,8 @@ export function getPageSeo(inputPath: string): SeoData {
   const custom = CUSTOM[path];
   if (custom) return { ...custom, canonical: `${SITE.url}${path === '/' ? '/' : path}` };
   const legacy = LEGACY_REDIRECTS.find((route) => route.from === path);
-  if (legacy?.action === '410') return { title: 'Inhalt entfernt | MPU Wissen', description: 'Dieser veraltete Inhalt wurde ohne unpassende Weiterleitung entfernt.', canonical: `${SITE.url}${path}`, indexability: 'noindex', type: 'website' };
-  return { title: 'Seite nicht gefunden | MPU Wissen', description: 'Die gesuchte Seite wurde nicht gefunden.', canonical: `${SITE.url}${path}`, indexability: 'noindex', type: 'website' };
+  if (legacy?.action === '410') return { title: 'Inhalt entfernt | MPU Wissen', description: 'Dieser veraltete Inhalt wurde ohne unpassende Weiterleitung entfernt.', indexability: 'noindex', type: 'website' };
+  return { title: 'Seite nicht gefunden | MPU Wissen', description: 'Die gesuchte Seite wurde nicht gefunden.', indexability: 'noindex', type: 'website' };
 }
 
 export function schemaForPath(inputPath: string): object[] {
@@ -72,5 +73,5 @@ const escapeHtml = (value: string) => value.replaceAll('&', '&amp;').replaceAll(
 export function renderSeoHead(path: string): string {
   const seo = getPageSeo(path);
   const schema = schemaForPath(path).map((item) => `<script type="application/ld+json" data-static-schema="true">${JSON.stringify(item).replaceAll('<', '\\u003c')}</script>`).join('');
-  return `<title>${escapeHtml(seo.title)}</title><meta name="description" content="${escapeHtml(seo.description)}"><meta name="robots" content="${seo.indexability === 'index' ? 'index,follow,max-image-preview:large' : 'noindex,follow'}"><link rel="canonical" href="${escapeHtml(seo.canonical)}"><meta property="og:type" content="${seo.type ?? 'website'}"><meta property="og:title" content="${escapeHtml(seo.title)}"><meta property="og:description" content="${escapeHtml(seo.description)}"><meta property="og:url" content="${escapeHtml(seo.canonical)}"><meta property="og:site_name" content="${SITE.name}"><meta name="twitter:card" content="summary"><meta name="twitter:title" content="${escapeHtml(seo.title)}"><meta name="twitter:description" content="${escapeHtml(seo.description)}">${schema}`;
+  return `<title>${escapeHtml(seo.title)}</title><meta name="description" content="${escapeHtml(seo.description)}"><meta name="robots" content="${seo.indexability === 'index' ? 'index,follow,max-image-preview:large' : 'noindex,follow'}">${seo.canonical ? `<link rel="canonical" href="${escapeHtml(seo.canonical)}">` : ''}<meta property="og:type" content="${seo.type ?? 'website'}"><meta property="og:title" content="${escapeHtml(seo.title)}"><meta property="og:description" content="${escapeHtml(seo.description)}">${seo.canonical ? `<meta property="og:url" content="${escapeHtml(seo.canonical)}">` : ''}<meta property="og:site_name" content="${SITE.name}"><meta name="twitter:card" content="summary"><meta name="twitter:title" content="${escapeHtml(seo.title)}"><meta name="twitter:description" content="${escapeHtml(seo.description)}">${schema}`;
 }

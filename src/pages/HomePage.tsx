@@ -46,7 +46,7 @@ export function HomePage() {
           <ol>
             <li><span>01</span><div><h3>Intent vor Textmenge</h3><p>Jede Seite beantwortet eine klar umrissene Wissensfrage und nennt ihren Domain-Eigentümer.</p></div></li>
             <li><span>02</span><div><h3>Quellen vor Gewissheit</h3><p>Rechtliche, medizinische und verfahrensbezogene Aussagen werden belegt oder als prüfpflichtig markiert.</p></div></li>
-            <li><span>03</span><div><h3>Review vor Indexierung</h3><p>Risikoinhalte werden erst nach dokumentierter Fachprüfung für Suchmaschinen freigegeben.</p></div></li>
+            <li><span>03</span><div><h3>Review vor Indexierung</h3><p>Risikoinhalte bleiben für Suchmaschinen gesperrt, bis eine fachliche Prüfung vorliegt. Den Prüfstatus zeigt jeder Artikel.</p></div></li>
             <li><span>04</span><div><h3>Korrekturen bleiben sichtbar</h3><p>Materiale Änderungen erhalten einen nachvollziehbaren Korrekturhinweis.</p></div></li>
           </ol>
           <div className="policy-links"><Link to="/redaktionsrichtlinien/">Redaktionsrichtlinien lesen →</Link><Link to="/korrekturen/">Korrektur melden →</Link></div>

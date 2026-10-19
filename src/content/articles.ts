@@ -28,7 +28,7 @@ export const ARTICLES: Article[] = [
     pillarSlug: '/wissen/',
     sources: [SOURCES.fev11, SOURCES.fev4a, SOURCES.bk5Foundations],
     reviewRequirements: ['MPU_FACHREVIEW', 'LEGAL_REVIEW', 'EDITORIAL_REVIEW', 'SOURCE_VERIFICATION'],
-    reviewScope: 'Fachliche und rechtliche Prüfung der korrigierten Fassung abgeschlossen; keine universellen Untersuchungsbestandteile, Dauern oder Erfolgsaussagen.',
+    reviewScope: 'Fachliche Prüfung der korrigierten Fassung auf Artikelebene abgeschlossen (Experten-Handoff vom 3. September 2026); keine universellen Untersuchungsbestandteile, Dauern oder Erfolgsaussagen.',
     publicationState: 'APPROVED_PUBLIC',
     schema: ['Article', 'BreadcrumbList', 'FAQPage'],
     body: [
@@ -220,7 +220,7 @@ export const ARTICLES: Article[] = [
     pillarSlug: '/wissen/',
     sources: [SOURCES.fev11, SOURCES.fev66, SOURCES.fev4a, SOURCES.fev14, SOURCES.bk5Foundations],
     reviewRequirements: ['MPU_FACHREVIEW', 'LEGAL_REVIEW', 'EDITORIAL_REVIEW', 'SOURCE_VERIFICATION'],
-    reviewScope: 'Fachliche und rechtliche Prüfung der korrigierten Fassung abgeschlossen; Auswahl, Aktenweg und Trennungsregeln bleiben ohne Erfolgs- oder Fristversprechen.',
+    reviewScope: 'Fachliche Prüfung der korrigierten Fassung auf Artikelebene abgeschlossen (Experten-Handoff vom 3. September 2026); Auswahl, Aktenweg und Trennungsregeln bleiben ohne Erfolgs- oder Fristversprechen.',
     publicationState: 'APPROVED_PUBLIC',
     schema: ['Article', 'BreadcrumbList', 'FAQPage'],
     body: [
