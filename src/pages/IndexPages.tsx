@@ -4,6 +4,7 @@ import { KnowledgeCard, PillarCard } from '../components/Cards';
 import { ARTICLES } from '../content/articles';
 import { isFAQPublic } from '../content/model';
 import { GLOSSARY, PILLARS } from '../content/pillars';
+import { useHydrated } from '../components/useHydrated';
 
 export function KnowledgeIndexPage() {
   const live = PILLARS.filter((pillar) => pillar.path);
@@ -17,7 +18,8 @@ export function GuideIndexPage() {
 
 export function GlossaryPage() {
   const [params] = useSearchParams();
-  const selected = params.get('begriff');
+  const hydrated = useHydrated();
+  const selected = hydrated ? params.get('begriff') : null;
   return <main id="main-content"><div className="wrap narrow"><Breadcrumbs items={[{ label: 'Glossar' }]} /><header className="page-header"><span className="eyebrow">Kuratierte Begriffe</span><h1>MPU-Glossar</h1><p>Kurze Definitionen mit Kontext. Begriffe werden nicht automatisch zu dünnen Einzelseiten aufgeblasen.</p></header><dl className="glossary">{GLOSSARY.map((entry) => <div key={entry.term} className={selected === entry.term ? 'selected' : ''}><dt>{entry.term}</dt><dd>{entry.definition}{entry.relatedPath && <Link to={entry.relatedPath}>Im Zusammenhang lesen →</Link>}</dd></div>)}</dl></div></main>;
 }
 

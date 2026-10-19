@@ -57,12 +57,8 @@ describe('release candidate guards', () => {
     }
   });
 
-  it('shows the article excerpt, not the full article body, in search results', () => {
-    const article = ARTICLES.find((item) => item.slug === '/mpu-begutachtungsstelle/')!;
-    const html = render('/?q=Begutachtungsstelle').html;
-    expect(html).toContain(article.excerpt);
-    const bodyParagraph = article.body.find((block) => block.type === 'paragraph');
-    expect(bodyParagraph && 'text' in bodyParagraph && html.includes(bodyParagraph.text)).toBe(false);
+  it('never prerenders query-dependent search results (they render after hydration)', () => {
+    expect(render('/?q=Begutachtungsstelle').html).not.toContain('search-results');
   });
 
   it('states the FAQ counts from the data instead of hard-coded numbers', () => {

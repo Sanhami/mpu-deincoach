@@ -1,7 +1,8 @@
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { Link, useSearchParams } from 'react-router-dom';
 import { ARTICLES } from '../content/articles';
 import { GLOSSARY, PILLARS } from '../content/pillars';
+import { useHydrated } from './useHydrated';
 
 interface Result { title: string; text: string; summary: string; path: string; kind: string }
 
@@ -9,14 +10,17 @@ const normalize = (value: string) => value.toLocaleLowerCase('de-DE').normalize(
 
 export function Search({ large = false }: { large?: boolean }) {
   const [params, setParams] = useSearchParams();
-  const [value, setValue] = useState(params.get('q') ?? '');
+  const [value, setValue] = useState('');
+  const urlQuery = params.get('q') ?? '';
+  useEffect(() => setValue(urlQuery), [urlQuery]);
   const submit = (event: React.FormEvent) => { event.preventDefault(); const query = value.trim(); if (query) setParams({ q: query }); };
   return <form className={`search${large ? ' large' : ''}`} role="search" onSubmit={submit}><label htmlFor={large ? 'knowledge-search-large' : 'knowledge-search'}>Was möchtest du wissen?</label><div><input id={large ? 'knowledge-search-large' : 'knowledge-search'} name="q" type="search" value={value} onChange={(event) => setValue(event.target.value)} placeholder="Zum Beispiel: Begutachtungsstelle" autoComplete="off" /><button type="submit">Suchen</button></div></form>;
 }
 
 export function SearchResults() {
   const [params] = useSearchParams();
-  const query = params.get('q')?.trim() ?? '';
+  const hydrated = useHydrated();
+  const query = hydrated ? params.get('q')?.trim() ?? '' : '';
   const results = useMemo<Result[]>(() => {
     if (query.length < 2) return [];
     const words = normalize(query).split(/\s+/);
